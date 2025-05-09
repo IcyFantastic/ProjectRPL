@@ -34,14 +34,14 @@ public class RegisterController {
         users.add(new User(u, p));
         Storage.saveUsers(users);
         Stage s = (Stage) usernameField.getScene().getWindow();
-        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login_view.fxml"))));
+        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"))));
         s.setTitle("Login");
     }
 
     @FXML
     private void backToLogin() throws Exception {
         Stage s = (Stage) usernameField.getScene().getWindow();
-        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login_view.fxml"))));
+        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"))));
         s.setTitle("Login");
     }
 
