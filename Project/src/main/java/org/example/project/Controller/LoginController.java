@@ -23,7 +23,13 @@ public class LoginController {
         List<User> users = Storage.loadUsers();
         for (User user : users) {
             if (user.getUsername().equals(u) && user.getPassword().equals(p)) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main_view.fxml"));
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Login Berhasil");
+                success.setHeaderText(null);
+                success.setContentText("Selamat datang, " + u + "!");
+                success.showAndWait();
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main-view.fxml"));
                 Stage s = (Stage) usernameField.getScene().getWindow();
                 s.setScene(new Scene(loader.load()));
                 s.setTitle("To-Do List - " + u);
@@ -40,7 +46,7 @@ public class LoginController {
     @FXML
     private void openRegister() throws Exception {
         Stage s = (Stage) usernameField.getScene().getWindow();
-        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/register_view.fxml"))));
+        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/register-view.fxml"))));
         s.setTitle("Register");
     }
 }

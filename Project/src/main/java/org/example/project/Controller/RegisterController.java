@@ -33,15 +33,22 @@ public class RegisterController {
         for (User user : users) if (user.getUsername().equals(u)) { show("Username sudah terdaftar"); return; }
         users.add(new User(u, p));
         Storage.saveUsers(users);
+
+        Alert success = new Alert(Alert.AlertType.INFORMATION);
+        success.setTitle("Registrasi Berhasil");
+        success.setHeaderText(null);
+        success.setContentText("Akun berhasil dibuat! Silakan login.");
+        success.showAndWait();
+
         Stage s = (Stage) usernameField.getScene().getWindow();
-        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login_view.fxml"))));
+        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"))));
         s.setTitle("Login");
     }
 
     @FXML
     private void backToLogin() throws Exception {
         Stage s = (Stage) usernameField.getScene().getWindow();
-        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login_view.fxml"))));
+        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"))));
         s.setTitle("Login");
     }
 
