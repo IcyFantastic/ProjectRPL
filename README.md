@@ -3,5 +3,5 @@
 71231039 - Hansel Ivano.S <br>
 71231047 - Nengah Yesi Putri <br>
 <br>
-username:admin1
-pass:Admin23!
+username default:admin
+pass default:Admin123!
