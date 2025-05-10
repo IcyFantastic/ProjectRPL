@@ -70,4 +70,7 @@ public class Storage {
             gson.toJson(list, w);
         }
     }
+
+    public static void initializeStorage() {
+    }
 }
