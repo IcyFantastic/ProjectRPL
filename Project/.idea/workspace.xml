@@ -47,6 +47,19 @@
       <recent name="D:\Kuliah\Semester 4\RPL-BO\ProjectRPL\Project\src\main\resources" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="Project" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="Project" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -65,6 +78,8 @@
       <updated>1746869444944</updated>
       <workItem from="1746869446030" duration="320000" />
       <workItem from="1746869789768" duration="773000" />
+      <workItem from="1746871107271" duration="52000" />
+      <workItem from="1746871170720" duration="30000" />
     </task>
     <servers />
   </component>

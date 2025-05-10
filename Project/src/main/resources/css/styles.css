@@ -1,0 +1,103 @@
+/* ========== Umum ========== */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #f8f9fa;
+}
+
+/* ========== Label ========== */
+.title-label {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212529;
+}
+
+/* ========== TextField & PasswordField ========== */
+.text-field, .password-field {
+    -fx-pref-height: 36px;
+    -fx-font-size: 13px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #ced4da;
+    -fx-border-width: 1px;
+    -fx-padding: 0 8 0 8;
+    -fx-background-color: white;
+}
+
+/* Fokus */
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #5cb85c;
+    -fx-border-width: 2px;
+}
+
+/* ========== Tombol Umum ========== */
+.button {
+    -fx-background-color: #5cb85c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-pref-height: 36px;
+    -fx-pref-width: 100px;
+}
+
+/* Hover efek */
+.button:hover {
+    -fx-background-color: #4cae4c;
+}
+
+/* ========== Container Layout (jika pakai VBox, AnchorPane, dll.) ========== */
+#mainContainer {
+    -fx-padding: 24px;
+    -fx-spacing: 12px;
+    -fx-alignment: center;
+}
+
+/* =========================
+   MAIN VIEW - Dashboard
+   ========================= */
+
+/* Container utama di main-view */
+#mainContainer {
+    -fx-padding: 24px;
+    -fx-background-color: #ffffff;
+    -fx-spacing: 16px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);
+}
+
+/* Daftar catatan (jika menggunakan ListView atau VBox) */
+.list-view, .note-list {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px;
+    -fx-spacing: 8px;
+}
+
+/* Setiap item catatan */
+.note-item {
+    -fx-background-color: white;
+    -fx-padding: 12px;
+    -fx-background-radius: 6px;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+/* Tombol di atas/bawah atau navigasi */
+.nav-button {
+    -fx-background-color: #17a2b8;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-pref-height: 36px;
+}
+
+.nav-button:hover {
+    -fx-background-color: #138496;
+}

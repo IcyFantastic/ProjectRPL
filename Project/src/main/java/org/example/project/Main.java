@@ -24,7 +24,7 @@ public class Main extends Application {
             }
 
             if (fxmlLocation == null) {
-                throw new IOException("File login-view.fxml tidak ditemukan.");
+                throw new IOException("File /fxml/login-view.fxml tidak ditemukan.");
             }
 
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
