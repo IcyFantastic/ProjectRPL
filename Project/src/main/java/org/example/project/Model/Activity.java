@@ -1,8 +1,10 @@
 package org.example.project.Model;
+import java.io.Serializable;
 
 import java.time.LocalDate;
 
-public class Activity {
+public class Activity implements Serializable
+{
     private String title;
     private LocalDate date;
     private Category category;

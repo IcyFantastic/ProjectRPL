@@ -1,3 +1,4 @@
+// MainController.java
 package org.example.project.Controller;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -33,6 +34,7 @@ public class MainController {
     private ObservableList<Activity> activities;
     private ObservableList<Category> categories;
     private String user;
+    private Runnable logoutCallback; // Untuk menyimpan data saat logout
 
     public void initData(String username) {
         this.user = username;
@@ -68,6 +70,10 @@ public class MainController {
         checkReminders();
     }
 
+    public void setOnLogout(Runnable callback) {
+        this.logoutCallback = callback;
+    }
+
     private void checkReminders() {
         LocalDate today = LocalDate.now();
         long cnt = activities.stream().filter(a -> a.getDate().equals(today) && !a.isCompleted()).count();
@@ -82,10 +88,14 @@ public class MainController {
     private void addActivity() throws Exception {
         Dialog<Activity> d = new ActivityDialog(user, null);
         d.showAndWait().ifPresent(a -> {
-            a.setUser(user); // Set user pada aktivitas baru
-            activities.add(a);
+            a.setUser(user);
+            Storage.addActivity(a); // langsung simpan
+            activities.setAll(Storage.getActivities().stream()
+                    .filter(act -> act.getUser().equals(user))
+                    .collect(Collectors.toList()));
         });
     }
+
 
     @FXML
     private void editActivity() throws Exception {
@@ -93,27 +103,49 @@ public class MainController {
         if (sel == null) return;
 
         Dialog<Activity> d = new ActivityDialog(user, sel);
-        d.showAndWait().ifPresent(a -> {
-            activities.set(activities.indexOf(sel), a);
+        d.showAndWait().ifPresent(updated -> {
+            // Update data pada Storage
+            List<Activity> all = Storage.getActivities();
+            int index = all.indexOf(sel);
+            if (index != -1) {
+                updated.setUser(user); // pastikan user tetap diset
+                all.set(index, updated);
+                Storage.saveAll(); // simpan perubahan
+            }
+
+            // Refresh tampilan
+            activities.setAll(Storage.getActivities().stream()
+                    .filter(a -> a.getUser().equals(user))
+                    .collect(Collectors.toList()));
         });
     }
+
 
     @FXML
     private void deleteActivity() {
         Activity sel = activityTable.getSelectionModel().getSelectedItem();
         if (sel != null) {
-            activities.remove(sel);
+            Storage.getActivities().remove(sel); // hapus dari storage
+            Storage.saveAll(); // simpan perubahan
+
+            // Refresh tampilan
+            activities.setAll(Storage.getActivities().stream()
+                    .filter(a -> a.getUser().equals(user))
+                    .collect(Collectors.toList()));
         }
     }
+
 
     @FXML
     private void markCompleted() {
         Activity sel = activityTable.getSelectionModel().getSelectedItem();
         if (sel != null) {
             sel.setCompleted(!sel.isCompleted());
+            Storage.saveAll(); // simpan perubahan status
             activityTable.refresh();
         }
     }
+
 
     @FXML
     private void searchActivities() {
@@ -140,12 +172,20 @@ public class MainController {
     private void manageCategories() {
         Dialog<List<Category>> d = new CategoryDialog(user, categories);
         d.showAndWait().ifPresent(list -> {
-            categories.setAll(list);
+            list.forEach(cat -> {
+                cat.setUser(user);
+                Storage.addCategory(cat); // langsung simpan
+            });
+            categories.setAll(Storage.getCategories().stream()
+                    .filter(cat -> cat.getUser().equals(user))
+                    .collect(Collectors.toList()));
         });
     }
 
+
     @FXML
     private void handleLogout() throws Exception {
+        if (logoutCallback != null) logoutCallback.run();
         Stage s = (Stage) activityTable.getScene().getWindow();
         s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"))));
         s.setTitle("To-Do List");

@@ -1,6 +1,8 @@
 package org.example.project.Model;
+import java.io.Serializable;
 
-public class Category {
+public class Category implements Serializable
+{
     private String name;
     private String description;
     private String user; // Atribut untuk mendukung multi-akun

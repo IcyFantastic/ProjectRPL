@@ -17,20 +17,30 @@ public class Main extends Application {
             // Inisialisasi database
             Storage.initializeStorage();
 
+            // Load FXML login
             URL fxmlLocation = getClass().getResource("/fxml/login-view.fxml");
             if (fxmlLocation == null) {
                 fxmlLocation = getClass().getResource("login-view.fxml");
             }
 
             if (fxmlLocation == null) {
-                throw new IOException("File login-view.fxml tidak ditemukan.");
+                throw new IOException("File /fxml/login-view.fxml tidak ditemukan.");
             }
 
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
-//            scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
+
+            // Buat scene dan sambungkan CSS
+            Scene scene = new Scene(root);
+            URL cssURL = getClass().getResource("/css/styles.css");
+            if (cssURL != null) {
+                scene.getStylesheets().add(cssURL.toExternalForm());
+            } else {
+                System.err.println("File styles.css tidak ditemukan.");
+            }
+
             stage.setTitle("To-Do List");
-            stage.setScene(new Scene(root));
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

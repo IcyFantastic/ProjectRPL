@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.project.Controller.MainController" prefWidth="800" prefHeight="600">
+
+<BorderPane prefHeight="600" prefWidth="800" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.project.Controller.MainController">
     <top>
         <ToolBar>
-            <Button text="Tambah" onAction="#addActivity" />
-            <Button text="Edit" onAction="#editActivity" />
-            <Button text="Hapus" onAction="#deleteActivity" />
-            <Button text="Mark Selesai" onAction="#markCompleted" />
+            <Button onAction="#addActivity" text="Tambah" />
+            <Button onAction="#editActivity" text="Edit" />
+            <Button onAction="#deleteActivity" text="Hapus" />
+            <Button onAction="#markCompleted" text="Mark Selesai" />
             <Separator />
-            <Button text="Kategori" onAction="#manageCategories" />
+            <Button onAction="#manageCategories" text="Kategori" />
             <Separator />
-            <TextField fx:id="searchField" promptText="Cari..." onKeyReleased="#searchActivities" />
-            <ComboBox fx:id="filterStatus" promptText="Status" onAction="#filterChanged" />
-            <ComboBox fx:id="filterPriority" promptText="Prioritas" onAction="#filterChanged" />
-            <ComboBox fx:id="filterCategory" promptText="Kategori" onAction="#filterChanged" />
-            <Button text="Logout" onAction="#handleLogout" />
+            <TextField fx:id="searchField" onKeyReleased="#searchActivities" promptText="Cari..." />
+            <ComboBox fx:id="filterStatus" onAction="#filterChanged" promptText="Status" />
+            <ComboBox fx:id="filterPriority" onAction="#filterChanged" promptText="Prioritas" />
+            <ComboBox fx:id="filterCategory" onAction="#filterChanged" promptText="Kategori" />
+            <Button onAction="#handleLogout" text="Logout" />
         </ToolBar>
     </top>
     <center>
         <TableView fx:id="activityTable">
             <columns>
-                <TableColumn text="Judul" fx:id="colTitle" />
-                <TableColumn text="Tanggal" fx:id="colDate" />
-                <TableColumn text="Kategori" fx:id="colCategory" />
-                <TableColumn text="Prioritas" fx:id="colPriority" />
-                <TableColumn text="Status" fx:id="colStatus" />
+                <TableColumn fx:id="colTitle" text="Judul" />
+                <TableColumn fx:id="colDate" text="Tanggal" />
+                <TableColumn fx:id="colCategory" text="Kategori" />
+                <TableColumn fx:id="colPriority" text="Prioritas" />
+                <TableColumn fx:id="colStatus" text="Status" />
+                <TableColumn fx:id="colDescription" prefWidth="398.6666564941406" text="Deskripsi" />
             </columns>
         </TableView>
     </center>

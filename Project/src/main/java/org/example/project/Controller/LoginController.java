@@ -9,18 +9,24 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class LoginController {
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
 
     @FXML
+    public void initialize() {
+        Storage.initializeStorage(); // Memuat semua data dari data.dat
+    }
+
+    @FXML
     private void handleLogin() throws Exception {
         String u = usernameField.getText();
         String p = passwordField.getText();
-        List<User> users = Storage.loadUsers();
+        List<User> users = Storage.getUsers(); // Ambil data dari memori
+
         for (User user : users) {
             if (user.getUsername().equals(u) && user.getPassword().equals(p)) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/main-view.fxml"));
@@ -29,9 +35,14 @@ public class LoginController {
                 s.setTitle("To-Do List - " + u);
                 MainController mc = loader.getController();
                 mc.initData(u);
+                mc.setOnLogout(() -> Storage.saveAll());
+
+                // Simpan saat aplikasi ditutup
+                s.setOnCloseRequest((WindowEvent we) -> Storage.saveAll());
                 return;
             }
         }
+
         Alert a = new Alert(Alert.AlertType.ERROR);
         a.setContentText("Username atau password salah");
         a.showAndWait();

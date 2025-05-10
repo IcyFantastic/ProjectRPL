@@ -22,6 +22,7 @@ public class RegisterController {
         String u = usernameField.getText();
         String p = passwordField.getText();
         String c = confirmField.getText();
+
         if (!Pattern.matches("^[a-zA-Z0-9]{4,25}$", u)) {
             show("Username harus 4-25 alfanumerik"); return;
         }
@@ -29,10 +30,17 @@ public class RegisterController {
                 !Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{4,}$", p)) {
             show("Password tidak memenuhi kriteria"); return;
         }
-        List<User> users = Storage.loadUsers();
-        for (User user : users) if (user.getUsername().equals(u)) { show("Username sudah terdaftar"); return; }
-        users.add(new User(u, p));
-        Storage.saveUsers(users);
+
+        List<User> users = Storage.getUsers(); // Ambil dari memori
+        for (User user : users) {
+            if (user.getUsername().equals(u)) {
+                show("Username sudah terdaftar");
+                return;
+            }
+        }
+
+        Storage.addUser(new User(u, p)); // Tambahkan dan simpan otomatis
+
         Stage s = (Stage) usernameField.getScene().getWindow();
         s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"))));
         s.setTitle("Login");
