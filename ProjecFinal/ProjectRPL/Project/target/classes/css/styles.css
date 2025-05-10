@@ -1,0 +1,273 @@
+/* ========== Umum ========== */
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #f8f9fa;
+}
+
+/* ========== Label ========== */
+.title-label {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212529;
+}
+
+/* ========== TextField & PasswordField ========== */
+.text-field, .password-field {
+    -fx-pref-height: 36px;
+    -fx-font-size: 13px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #ced4da;
+    -fx-border-width: 1px;
+    -fx-padding: 0 8 0 8;
+    -fx-background-color: white;
+}
+
+/* Fokus */
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #5cb85c;
+    -fx-border-width: 2px;
+}
+
+/* ========== Tombol Umum ========== */
+.button {
+    -fx-background-color: #5cb85c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-pref-height: 36px;
+    -fx-pref-width: 100px;
+}
+
+/* Hover efek */
+.button:hover {
+    -fx-background-color: #4cae4c;
+}
+
+/* ========== Container Layout (jika pakai VBox, AnchorPane, dll.) ========== */
+#mainContainer {
+    -fx-padding: 24px;
+    -fx-spacing: 12px;
+    -fx-alignment: center;
+}
+
+/* =========================
+   MAIN VIEW - Dashboard
+   ========================= */
+
+/* Container utama di main-view */
+#mainContainer {
+    -fx-padding: 24px;
+    -fx-background-color: #ffffff;
+    -fx-spacing: 16px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);
+}
+
+/* Daftar catatan (jika menggunakan ListView atau VBox) */
+.list-view, .note-list {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px;
+    -fx-spacing: 8px;
+}
+
+/* Setiap item catatan */
+.note-item {
+    -fx-background-color: white;
+    -fx-padding: 12px;
+    -fx-background-radius: 6px;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+/* Tombol di atas/bawah atau navigasi */
+.nav-button {
+    -fx-background-color: #17a2b8;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-pref-height: 36px;
+}
+
+.nav-button:hover {
+    -fx-background-color: #138496;
+}
+
+
+/* =========================
+   MAIN VIEW - Tampilan Utama
+   ========================= */
+
+/* Label judul utama */
+.main-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #343a40;
+}
+
+/* TextArea untuk isi catatan */
+.note-area {
+    -fx-font-size: 13px;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #ced4da;
+    -fx-border-width: 1px;
+    -fx-padding: 8px;
+    -fx-background-color: white;
+}
+
+.note-area:focused {
+    -fx-border-color: #5cb85c;
+    -fx-border-width: 2px;
+}
+
+/* Tombol aksi utama (simpan, reset, dll.) */
+.action-button {
+    -fx-background-color: #007bff;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-pref-height: 36px;
+    -fx-pref-width: 100px;
+}
+
+.action-button:hover {
+    -fx-background-color: #0069d9;
+}
+
+/* Kontainer untuk tombol-tombol */
+.button-group {
+    -fx-spacing: 12px;
+    -fx-alignment: center;
+}
+
+/* List item khusus di tampilan utama */
+.main-list-item {
+    -fx-background-color: white;
+    -fx-padding: 10px;
+    -fx-background-radius: 6px;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+
+/* =========================
+   MAIN VIEW - Tampilan Utama (Warna Konsisten)
+   ========================= */
+
+/* Judul utama */
+.main-title {
+    -fx-text-fill: #212529;
+}
+
+/* Area catatan (TextArea) */
+.note-area {
+    -fx-background-color: white;
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: #ced4da;
+    -fx-border-width: 1px;
+    -fx-padding: 8px;
+}
+
+.note-area:focused {
+    -fx-border-color: #5cb85c;
+    -fx-border-width: 2px;
+}
+
+/* Tombol aksi utama seperti Simpan dan Reset */
+.action-button {
+    -fx-background-color: #5cb85c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.action-button:hover {
+    -fx-background-color: #4cae4c;
+}
+
+/* Kontainer tombol (misalnya HBox) */
+.button-group {
+    -fx-spacing: 12px;
+    -fx-alignment: center;
+}
+
+/* Item dalam daftar */
+.main-list-item {
+    -fx-background-color: white;
+    -fx-padding: 10px;
+    -fx-background-radius: 6px;
+    -fx-border-color: #dee2e6;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+}
+
+/* Daftar catatan */
+.main-list {
+    -fx-background-color: #f8f9fa;
+    -fx-border-color: #ced4da;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-padding: 8px;
+    -fx-spacing: 8px;
+}
+
+/* Tombol Logout dengan ikon panah */
+.logout-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #dc3545;
+    -fx-cursor: hand;
+}
+
+.logout-button:hover {
+    -fx-text-fill: #c82333;
+}
+
+
+/* =========================
+   PENYESUAIAN TOMBOL UTAMA
+   ========================= */
+
+/* Tombol aksi utama (lebih kecil) */
+.action-button {
+    -fx-background-color: #5cb85c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-pref-height: 30px;
+    -fx-pref-width: 80px;
+}
+
+.action-button:hover {
+    -fx-background-color: #4cae4c;
+}
+
+/* Tombol kategori, status, dan prioritas */
+.status-button, .priority-button, .category-button {
+    -fx-background-color: #5cb85c;
+    -fx-text-fill: white;
+    -fx-font-weight: normal;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-pref-height: 28px;
+    -fx-pref-width: 90px;
+    -fx-font-size: 12px;
+}
+
+.status-button:hover, .priority-button:hover, .category-button:hover {
+    -fx-background-color: #4cae4c;
+}
