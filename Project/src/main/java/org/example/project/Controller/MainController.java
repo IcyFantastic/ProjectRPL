@@ -2,17 +2,17 @@ package org.example.project.Controller;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.ReadOnlyStringWrapper;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import org.example.project.Model.Activity;
-import org.example.project.Model.Category;
-import org.example.project.Util.Storage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.util.Callback;
 import javafx.stage.Stage;
+import org.example.project.Model.Activity;
+import org.example.project.Model.Category;
+import org.example.project.Util.Storage;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,29 +33,41 @@ public class MainController {
     private ObservableList<Category> categories;
     private String user;
 
-    public void initData(String username) throws Exception {
+    public void initData(String username) {
         this.user = username;
-        List<Category> cats = Storage.loadCategories(user);
-        categories = FXCollections.observableArrayList(cats);
-        categories.add(new Category(""));
+
+        // Ambil kategori yang terkait dengan pengguna
+        categories = FXCollections.observableArrayList(Storage.getCategories().stream()
+                .filter(c -> c.getUser().equals(user)) // Pastikan kategori milik pengguna
+                .collect(Collectors.toList()));
+        categories.add(new Category("")); // Tambahkan kategori kosong untuk filter
         filterCategory.setItems(categories);
-        List<Activity> acts = Storage.loadActivities(user);
-        activities = FXCollections.observableArrayList(acts);
+
+        // Ambil aktivitas yang terkait dengan pengguna
+        activities = FXCollections.observableArrayList(Storage.getActivities().stream()
+                .filter(a -> a.getUser().equals(user)) // Pastikan aktivitas milik pengguna
+                .collect(Collectors.toList()));
+
+        // Atur kolom tabel
         colTitle.setCellValueFactory(d -> new ReadOnlyStringWrapper(d.getValue().getTitle()));
         colDate.setCellValueFactory(d -> new ReadOnlyObjectWrapper<>(d.getValue().getDate()));
         colCategory.setCellValueFactory(d -> new ReadOnlyObjectWrapper<>(d.getValue().getCategory()));
         colPriority.setCellValueFactory(d -> new ReadOnlyStringWrapper(d.getValue().getPriority()));
         colStatus.setCellValueFactory(d -> new ReadOnlyObjectWrapper<>(d.getValue().isCompleted()));
         activityTable.setItems(activities);
-        filterStatus.setItems(FXCollections.observableArrayList("","Selesai","Belum"));
-        filterPriority.setItems(FXCollections.observableArrayList("","Tinggi","Sedang","Rendah"));
+
+        // Atur filter
+        filterStatus.setItems(FXCollections.observableArrayList("", "Selesai", "Belum"));
+        filterPriority.setItems(FXCollections.observableArrayList("", "Tinggi", "Sedang", "Rendah"));
+
+        // Cek pengingat aktivitas
         checkReminders();
     }
 
     private void checkReminders() {
         LocalDate today = LocalDate.now();
         long cnt = activities.stream().filter(a -> a.getDate().equals(today) && !a.isCompleted()).count();
-        if (cnt>0) {
+        if (cnt > 0) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             a.setContentText("Ada " + cnt + " aktivitas hari ini");
             a.showAndWait();
@@ -65,30 +77,37 @@ public class MainController {
     @FXML
     private void addActivity() throws Exception {
         Dialog<Activity> d = new ActivityDialog(user, null);
-        d.showAndWait().ifPresent(a -> { activities.add(a); save(); });
+        d.showAndWait().ifPresent(a -> {
+            a.setUser(user); // Set user pada aktivitas baru
+            activities.add(a);
+        });
     }
 
     @FXML
     private void editActivity() throws Exception {
         Activity sel = activityTable.getSelectionModel().getSelectedItem();
-        if (sel==null) return;
+        if (sel == null) return;
+
         Dialog<Activity> d = new ActivityDialog(user, sel);
-        d.showAndWait().ifPresent(a -> { activities.set(activities.indexOf(sel), a); save(); });
+        d.showAndWait().ifPresent(a -> {
+            activities.set(activities.indexOf(sel), a);
+        });
     }
 
     @FXML
     private void deleteActivity() {
         Activity sel = activityTable.getSelectionModel().getSelectedItem();
-        if (sel!=null) { activities.remove(sel); save(); }
+        if (sel != null) {
+            activities.remove(sel);
+        }
     }
 
     @FXML
     private void markCompleted() {
         Activity sel = activityTable.getSelectionModel().getSelectedItem();
-        if (sel!=null) {
+        if (sel != null) {
             sel.setCompleted(!sel.isCompleted());
             activityTable.refresh();
-            save();
         }
     }
 
@@ -103,11 +122,12 @@ public class MainController {
         String stat = filterStatus.getValue();
         String pr = filterPriority.getValue();
         Category cat = filterCategory.getValue();
+
         List<Activity> filtered = activities.stream().filter(a ->
                 a.getTitle().toLowerCase().contains(stext) &&
-                        (stat==null||stat.isEmpty()||((stat.equals("Selesai"))==a.isCompleted())) &&
-                        (pr==null||pr.isEmpty()||pr.equals(a.getPriority())) &&
-                        (cat==null||cat.getName().isEmpty()||cat.equals(a.getCategory()))
+                        (stat == null || stat.isEmpty() || ((stat.equals("Selesai")) == a.isCompleted())) &&
+                        (pr == null || pr.isEmpty() || pr.equals(a.getPriority())) &&
+                        (cat == null || cat.getName().isEmpty() || cat.equals(a.getCategory()))
         ).collect(Collectors.toList());
         activityTable.setItems(FXCollections.observableArrayList(filtered));
     }
@@ -115,21 +135,15 @@ public class MainController {
     @FXML
     private void manageCategories() {
         Dialog<List<Category>> d = new CategoryDialog(user, categories);
-        d.showAndWait().ifPresent(list -> { categories.setAll(list); saveCats(); });
+        d.showAndWait().ifPresent(list -> {
+            categories.setAll(list);
+        });
     }
 
     @FXML
     private void handleLogout() throws Exception {
         Stage s = (Stage) activityTable.getScene().getWindow();
-        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login_view.fxml"))));
+        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"))));
         s.setTitle("To-Do List");
-    }
-
-    private void save() {
-        try { Storage.saveActivities(user, activities); } catch (Exception e) {}
-    }
-
-    private void saveCats() {
-        try { Storage.saveCategories(user, categories); } catch (Exception e) {}
     }
 }
