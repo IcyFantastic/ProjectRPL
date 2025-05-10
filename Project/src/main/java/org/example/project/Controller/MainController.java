@@ -23,11 +23,12 @@ public class MainController {
     @FXML private TableColumn<Activity, LocalDate> colDate;
     @FXML private TableColumn<Activity, Category> colCategory;
     @FXML private TableColumn<Activity, String> colPriority;
-    @FXML private TableColumn<Activity, Boolean> colStatus;
+    @FXML private TableColumn<Activity, String> colStatus;
     @FXML private ComboBox<String> filterStatus;
     @FXML private ComboBox<String> filterPriority;
     @FXML private ComboBox<Category> filterCategory;
     @FXML private TextField searchField;
+    @FXML private TableColumn<Activity, String> colDescription;
 
     private ObservableList<Activity> activities;
     private ObservableList<Category> categories;
@@ -53,7 +54,10 @@ public class MainController {
         colDate.setCellValueFactory(d -> new ReadOnlyObjectWrapper<>(d.getValue().getDate()));
         colCategory.setCellValueFactory(d -> new ReadOnlyObjectWrapper<>(d.getValue().getCategory()));
         colPriority.setCellValueFactory(d -> new ReadOnlyStringWrapper(d.getValue().getPriority()));
-        colStatus.setCellValueFactory(d -> new ReadOnlyObjectWrapper<>(d.getValue().isCompleted()));
+        colStatus.setCellValueFactory(d ->
+                new ReadOnlyStringWrapper(d.getValue().isCompleted() ? "Selesai" : "Belum")
+        );
+        colDescription.setCellValueFactory(d -> new ReadOnlyStringWrapper(d.getValue().getDescription()));
         activityTable.setItems(activities);
 
         // Atur filter
