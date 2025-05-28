@@ -1,0 +1,86 @@
+/* Global font & background */
+.root {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-background-color: white;
+}
+
+/* Left branding panel */
+.branding-pane {
+    -fx-background-color: #26A69A;
+    -fx-padding: 40;
+    -fx-alignment: center;
+}
+
+.branding-pane .label {
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+}
+
+.branding-pane .label:nth-child(2) {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Text fields */
+.text-field, .password-field {
+    -fx-background-color: transparent;
+    -fx-border-width: 0 0 2 0;
+    -fx-border-color: #26A69A;
+    -fx-padding: 5 0 5 0;
+    -fx-font-size: 14px;
+    -fx-transition: all 0.3s ease-in-out; /* optional if adding field hover effects */
+}
+
+/* Login Button */
+.button {
+    -fx-background-color: #26A69A;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0.3, 0, 2);
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+.button:hover {
+    -fx-background-color: #2BBBAD;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+/* Hyperlinks */
+.hyperlink {
+    -fx-text-fill: #26A69A;
+    -fx-underline: false;
+    -fx-font-size: 13px;
+    -fx-transition: all 0.2s ease-in-out;
+}
+
+.hyperlink:hover {
+    -fx-underline: true;
+    -fx-text-fill: #2BBBAD;
+}
+
+/* LOGIN title */
+.label {
+    -fx-text-fill: #333333;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-transition: all 0.3s ease-in-out;
+}
+
+#brandingPane {
+    -fx-background-color: #26A69A;
+    -fx-padding: 40;
+    -fx-alignment: center;
+}
+
+#brandingPane .label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-text-alignment: center;
+}

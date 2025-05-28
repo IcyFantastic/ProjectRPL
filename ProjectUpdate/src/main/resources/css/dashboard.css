@@ -1,0 +1,73 @@
+/* Sidebar */
+#sidebar {
+    -fx-background-color: #EEEEEE;
+}
+
+.nav-item {
+    -fx-font-size: 14px;
+    -fx-padding: 5 0;
+}
+
+.nav-item.selected {
+    -fx-font-weight: bold;
+}
+
+.intent-title {
+    -fx-text-fill: green;
+    -fx-font-weight: bold;
+}
+
+.intent-item {
+    -fx-font-weight: bold;
+}
+
+/* Add Button */
+.add-button {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+    -fx-background-radius: 30px;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+}
+
+/* Section Title */
+.section-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+/* Highlighted Task */
+.highlight-task {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+    -fx-padding: 5;
+}
+
+/* Task Status */
+.task-status {
+    -fx-text-fill: #E57373;
+}
+
+/* Quotes */
+.quote-title {
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+}
+
+.quote {
+    -fx-padding: 10;
+    -fx-background-radius: 10;
+}
+
+.quote.green {
+    -fx-background-color: #DCE775;
+}
+
+.quote.blue {
+    -fx-background-color: #80DEEA;
+}
+
+.quote.yellow {
+    -fx-background-color: #FFE082;
+}

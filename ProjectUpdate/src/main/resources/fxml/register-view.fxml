@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.project.Controller.RegisterController"
+            prefWidth="800" prefHeight="500"
+            stylesheets="@../css/buatakun.css">
+
+    <HBox prefWidth="800" prefHeight="500">
+
+        <!-- Left panel (Form Register) -->
+        <AnchorPane fx:id="formPane"
+                    prefWidth="400" prefHeight="500"
+                    style="-fx-background-color: white;">
+
+            <!-- Form container -->
+            <VBox fx:id="formVBox"
+                  alignment="CENTER"
+                  spacing="20"
+                  prefWidth="300"
+                  layoutX="50" layoutY="100"
+                  AnchorPane.topAnchor="100.0"
+                  AnchorPane.leftAnchor="50.0"
+                  AnchorPane.rightAnchor="50.0">
+
+                <!-- Title -->
+                <Label text="REGISTER"
+                       styleClass="form-title" />
+
+                <!-- Username Field -->
+                <TextField fx:id="usernameField"
+                           promptText="Username (4-25 chars)"
+                           styleClass="input-field" />
+
+                <!-- Password Field -->
+                <PasswordField fx:id="passwordField"
+                               promptText="Password (min 4 chars, mix)"
+                               styleClass="input-field" />
+
+                <!-- Confirm Password Field -->
+                <PasswordField fx:id="confirmField"
+                               promptText="Confirm Password"
+                               styleClass="input-field" />
+
+                <!-- Register Button -->
+                <Button text="REGISTER"
+                        onAction="#handleRegister"
+                        styleClass="form-button" />
+
+                <!-- Back to Login -->
+                <Hyperlink text="Kembali ke Login"
+                           onAction="#backToLogin"
+                           styleClass="form-link" />
+            </VBox>
+        </AnchorPane>
+
+        <!-- Right branding panel -->
+        <VBox fx:id="brandingPane"
+              prefWidth="400" prefHeight="500"
+              spacing="20"
+              alignment="CENTER"
+              styleClass="branding-pane">
+
+            <Label text="#002" styleClass="branding-small" />
+            <Label text="REGISTER UI" styleClass="branding-title" />
+            <Label text="Daftarkan dirimu dan mulai catatan harianmu"
+                   wrapText="true"
+                   styleClass="branding-text" />
+        </VBox>
+    </HBox>
+</AnchorPane>

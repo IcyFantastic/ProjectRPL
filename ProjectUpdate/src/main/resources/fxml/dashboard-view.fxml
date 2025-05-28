@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.project.Controller.DashboardController"
+            stylesheets="@../css/dashboard.css"
+            prefWidth="900" prefHeight="600">
+
+    <!-- Sidebar -->
+    <left>
+        <VBox fx:id="sidebar" spacing="20" prefWidth="180" alignment="TOP_CENTER">
+            <VBox fx:id="navMenu" spacing="10">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                <Label text="Today" styleClass="nav-item selected" />
+                <Label text="Upcomming" styleClass="nav-item" />
+                <Label text="Important" styleClass="nav-item" />
+                <Label text="Someday" styleClass="nav-item" />
+                <Label text="Trash" styleClass="nav-item" />
+            </VBox>
+            <VBox fx:id="intentList" spacing="5">
+                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                <Label text="Intent" styleClass="intent-title" />
+                <Label text="Trip to Nuwara" styleClass="intent-item" />
+                <Label text="BMW I8 Dream" styleClass="intent-item" />
+            </VBox>
+            <Button fx:id="addButton" text="+" styleClass="add-button" />
+        </VBox>
+    </left>
+
+    <!-- Main Content -->
+    <center>
+        <VBox spacing="10">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+            <Label text="Today Task" styleClass="section-title" />
+            <Separator />
+            <GridPane hgap="20" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="60"/>
+                    <ColumnConstraints percentWidth="40"/>
+                </columnConstraints>
+
+                <Label text="my birthday" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="highlight-task"/>
+                <Label text="In Progress" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="task-status"/>
+
+                <Label text="Home Work" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <Label text="In Progress" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="task-status"/>
+
+                <Label text="Read Books" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <Label text="In Progress" GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="task-status"/>
+
+                <Label text="Work Out" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-opacity: 0.5;"/>
+                <Label text="In Progress" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="task-status"/>
+
+                <Label text="create todo list" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                <Label text="In Progress" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="task-status"/>
+            </GridPane>
+        </VBox>
+    </center>
+
+    <!-- Quotes -->
+    <right>
+        <VBox spacing="20" alignment="TOP_CENTER">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+            <Label text="motivational quotes" styleClass="quote-title" />
+            <Label text="“It's fine to celebrate success but it is more important to heed the lessons of failure.”&#10;- Bill Gates"
+                   styleClass="quote green" wrapText="true"/>
+            <Label text="“The biggest risk is not taking any risk... In a world that changing really quickly, the only strategy that is guaranteed to fail is not taking risks.”&#10;- Mark Zuckerberg"
+                   styleClass="quote blue" wrapText="true"/>
+            <Label text="“I think that’s the single best piece of advice: constantly think about how you could be doing things better and questioning yourself.”&#10;- Elon Musk"
+                   styleClass="quote yellow" wrapText="true"/>
+        </VBox>
+    </right>
+</BorderPane>
