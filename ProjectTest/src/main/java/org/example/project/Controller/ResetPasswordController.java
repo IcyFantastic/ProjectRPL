@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -19,60 +18,46 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class ResetPasswordController {
-    @FXML private TextField usernameField;
-    @FXML private PasswordField newPasswordField;
-    @FXML private PasswordField confirmPasswordField;
+    @FXML private TextField usernameField; // Changed from emailField to usernameField
 
     @FXML
-    private void handleReset() throws Exception {
+    private void handleResetPassword(ActionEvent event) throws Exception {
         String username = usernameField.getText();
-        String newPassword = newPasswordField.getText();
-        String confirmPassword = confirmPasswordField.getText();
 
+        // Validasi format username (sesuai model User)
         if (!Pattern.matches("^[a-zA-Z0-9]{4,25}$", username)) {
-            show("Username tidak valid");
+            showAlert("Username harus 4-25 karakter alfanumerik");
             return;
         }
 
-        if (!newPassword.equals(confirmPassword) ||
-                !Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{4,}$", newPassword)) {
-            show("Password baru tidak memenuhi kriteria atau tidak sama");
-            return;
-        }
-
+        // Cek apakah username ada di database
         List<User> users = Storage.getUsers();
-        boolean found = false;
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                user.setPassword(newPassword);
-                found = true;
-                break;
-            }
-        }
+        boolean userExists = users.stream()
+                .anyMatch(user -> user.getUsername() != null &&
+                        user.getUsername().equalsIgnoreCase(username));
 
-        if (!found) {
-            show("Username tidak ditemukan");
+        if (!userExists) {
+            showAlert("Username tidak terdaftar dalam sistem");
             return;
         }
 
-        Storage.saveUsers(users);
-
+        // Tampilkan pesan sukses ( tanpa email)
         Alert success = new Alert(Alert.AlertType.INFORMATION);
-        success.setTitle("Reset Password Berhasil");
+        success.setTitle("Reset Password");
         success.setHeaderText(null);
-        success.setContentText("Password berhasil diubah. Silakan login kembali.");
+        success.setContentText("Instruksi reset password telah dikirim untuk username: " + username);
         success.showAndWait();
 
-        Stage s = (Stage) usernameField.getScene().getWindow();
-        s.setScene(new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/login-view.fxml")))));
-        s.setTitle("Login");
+        // Kembali ke login
+        backToLogin();
     }
 
     @FXML
     private void backToLogin() throws Exception {
-        Stage s = (Stage) usernameField.getScene().getWindow();
-        s.setScene(new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/login-view.fxml")))));
-        s.setTitle("Login");
+        Stage stage = (Stage) usernameField.getScene().getWindow();
+        stage.setScene(new Scene(FXMLLoader.load(
+                Objects.requireNonNull(getClass().getResource("/fxml/login-view.fxml")))));
+        stage.setTitle("Login");
     }
 
     @FXML
@@ -80,19 +65,18 @@ public class ResetPasswordController {
 
     @FXML
     private void initialize() {
+        // Animasi saat form muncul
         TranslateTransition tt = new TranslateTransition(Duration.millis(500), formVBox);
         tt.setFromY(300);
         tt.setToY(0);
         tt.play();
     }
 
-
-    private void show(String message) {
+    private void showAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    public void handleResetPassword(ActionEvent actionEvent) {
     }
 }
