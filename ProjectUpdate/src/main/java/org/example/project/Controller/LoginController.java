@@ -1,6 +1,9 @@
 package org.example.project.Controller;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -41,26 +44,45 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Fade in formPane
-        FadeTransition fade = new FadeTransition(Duration.millis(700), formPane);
-        fade.setFromValue(0);
-        fade.setToValue(1);
+        // Set initial opacity to 0
+        formPane.setOpacity(0);
+        brandingPane.setOpacity(0);
 
-        // Slide up formPane
-        TranslateTransition slideForm = new TranslateTransition(Duration.millis(700), formPane);
-        slideForm.setFromY(50);
-        slideForm.setToY(0);
+        // Modern fade-in for branding pane with slight scale
+        FadeTransition brandingFade = new FadeTransition(Duration.millis(800), brandingPane);
+        brandingFade.setFromValue(0);
+        brandingFade.setToValue(1);
 
-        // Slide brandingPane dari kanan
-        if (brandingPane != null) {
-            TranslateTransition slideBranding = new TranslateTransition(Duration.millis(700), brandingPane);
-            slideBranding.setFromX(300);
-            slideBranding.setToX(0);
-            slideBranding.play();
-        }
+        // Scale transition for branding pane (subtle zoom in)
+        ScaleTransition brandingScale = new ScaleTransition(Duration.millis(1000), brandingPane);
+        brandingScale.setFromX(0.95);
+        brandingScale.setFromY(0.95);
+        brandingScale.setToX(1);
+        brandingScale.setToY(1);
 
-        fade.play();
-        slideForm.play();
+        // Play branding animations
+        ParallelTransition brandingAnimation = new ParallelTransition(brandingFade, brandingScale);
+        brandingAnimation.play();
+
+        // Delayed animation for form pane
+        PauseTransition pause = new PauseTransition(Duration.millis(300));
+        pause.setOnFinished(e -> {
+            // Subtle fade in for form
+            FadeTransition formFade = new FadeTransition(Duration.millis(800), formPane);
+            formFade.setFromValue(0);
+            formFade.setToValue(1);
+
+            // Subtle slide up with easing
+            TranslateTransition formSlide = new TranslateTransition(Duration.millis(800), formPane);
+            formSlide.setFromY(20);
+            formSlide.setToY(0);
+            formSlide.setInterpolator(javafx.animation.Interpolator.EASE_OUT);
+
+            // Play form animations together
+            ParallelTransition formAnimation = new ParallelTransition(formFade, formSlide);
+            formAnimation.play();
+        });
+        pause.play();
     }
 
     @FXML
@@ -70,29 +92,37 @@ public class LoginController implements Initializable {
 
         Integer userId = Storage.validateUser(username, password);
         if (userId != null) {
-            // Simpan sesi login
+            // Validasi login user, lalu ...
             SessionManager.saveSession(userId);
 
-            // Login berhasil, ganti scene ke dashboard
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/dashboard-view.fxml"));
                 Parent root = loader.load();
 
-                // Dapatkan stage dari event
+                // 👇 Ini bagian No 2 — TARUH DI SINI
+                double fontSize = SessionManager.getFontSize();
+                double uiScale = SessionManager.getUiScale();
+
+                root.setStyle("-fx-font-size: " + fontSize + "px;");
+                root.setScaleX(uiScale);
+                root.setScaleY(uiScale);
+
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                Scene scene = new Scene(root);
 
-                // Set scene baru
-                stage.setScene(new Scene(root));
+                // Load dashboard CSS
+                URL cssURL = getClass().getResource("/css/dashboard.css");
+                if (cssURL != null) {
+                    scene.getStylesheets().add(cssURL.toExternalForm());
+                } else {
+                    System.err.println("File dashboard.css tidak ditemukan.");
+                }
 
-                // Optional: Set judul stage (window)
+                stage.setScene(scene);
                 stage.setTitle("Dashboard");
-
-                // Tampilkan
                 stage.show();
-
             } catch (IOException e) {
                 e.printStackTrace();
-                // Bisa tampilkan alert error juga jika perlu
             }
         } else {
             // Login gagal, tampilkan alert

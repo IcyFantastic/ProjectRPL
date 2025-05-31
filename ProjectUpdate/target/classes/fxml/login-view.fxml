@@ -2,39 +2,40 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
 <AnchorPane prefHeight="500" prefWidth="800" stylesheets="@../css/login.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.project.Controller.LoginController">
 
-    <!-- Split HBox: kiri hijau, kanan putih -->
+    <!-- Split HBox: left dark, right light -->
     <HBox prefHeight="500" prefWidth="800">
         <!-- Left panel -->
         <VBox fx:id="brandingPane" prefHeight="500" prefWidth="400" spacing="20" styleClass="branding-pane">
+            <padding>
+                <Insets top="40" right="30" bottom="40" left="30"/>
+            </padding>
             <children>
-                <Label style="-fx-font-size: 18px;" text="GROUP 7" />
-                <Label style="-fx-font-size: 36px; -fx-font-weight: bold;" text="TO - DO LIST" />
-                <Label wrapText="true" />
+                <Label styleClass="branding-small" text="GROUP 7" />
+                <Label styleClass="branding-title" text="TO - DO LIST" />
+                <Label styleClass="branding-text" text="Manage your tasks efficiently with our simple and intuitive to-do list application" wrapText="true" />
             </children>
         </VBox>
 
         <!-- Right panel-->
-        <AnchorPane fx:id="formPane" prefHeight="500" prefWidth="400" style="-fx-background-color: white;">
+        <AnchorPane fx:id="formPane" prefHeight="500" prefWidth="400" styleClass="form-pane">
+            <VBox alignment="TOP_CENTER" layoutX="50" layoutY="100" prefWidth="300" spacing="25">
+                <Label styleClass="form-title" text="LOGIN" />
 
-            <VBox alignment="TOP_CENTER" layoutX="50" layoutY="100" prefWidth="300" spacing="20">
+                <TextField fx:id="usernameField" promptText="Username" styleClass="input-field" />
 
-                <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #333;" text="LOGIN" />
+                <PasswordField fx:id="passwordField" promptText="Password" styleClass="input-field" />
 
-                <TextField fx:id="usernameField" promptText="User Name" style="-fx-background-radius: 0; -fx-border-width: 0 0 2 0; -fx-border-color: #26A69A; -fx-padding: 0 0 5 0;" />
-
-                <PasswordField fx:id="passwordField" promptText="Password" style="-fx-background-radius: 0; -fx-border-width: 0 0 2 0; -fx-border-color: #26A69A; -fx-padding: 0 0 5 0;" />
-
-                <Button fx:id="loginButton" onAction="#handleLogin" prefHeight="40" prefWidth="200" style="-fx-background-color: #26A69A; -fx-text-fill: white; -fx-font-size: 16px; -fx-background-radius: 20;" text="LOGIN" />
+                <Button fx:id="loginButton" onAction="#handleLogin" styleClass="primary-button" text="LOGIN" />
 
                 <HBox alignment="CENTER" spacing="40">
-                    <Hyperlink onAction="#openRegister" text="Buat Akun" />
-                    <Hyperlink onAction="#openReset" text="Lupa Password?" />
+                    <Hyperlink onAction="#openRegister" text="Buat Akun" styleClass="form-link" />
+                    <Hyperlink onAction="#openReset" text="Lupa Password?" styleClass="form-link" />
                 </HBox>
             </VBox>
-
         </AnchorPane>
     </HBox>
 </AnchorPane>

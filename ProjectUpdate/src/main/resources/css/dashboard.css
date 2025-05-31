@@ -1,164 +1,307 @@
+/* AtlantaFX-inspired Dashboard Styles */
+
 /* Base Styles */
 .root {
-    -fx-font-family: 'Segoe UI', Roboto, sans-serif;
-    -fx-background-color: #f5f9f5;
+    -fx-font-family: 'Segoe UI', 'SF Pro Display', Roboto, sans-serif;
+    -fx-background-color: #f0f2f5;
+    -fx-font-size: 13px;
 }
 
-/* Header Section */
-.header-box {
-    -fx-padding: 12px;
-    -fx-background-color: linear-gradient(to right, #2E7D32, #388E3C);
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
+.main-container {
+    -fx-background-color: transparent;
 }
 
-.header-label {
+/* Sidebar Styles */
+.sidebar {
+    -fx-background-color: #2e3440;
+    -fx-min-width: 220px;
+    -fx-pref-width: 220px;
+    -fx-max-width: 220px;
+    -fx-padding: 20px 15px;
+    -fx-spacing: 10px;
+}
+
+.sidebar-header {
+    -fx-alignment: center;
+    -fx-padding: 10px 0px 5px 0px;
+}
+
+.sidebar-title {
     -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.sidebar-separator {
+    -fx-background-color: #3b4252;
+    -fx-opacity: 0.6;
+}
+
+.nav-items {
+    -fx-spacing: 8px;
+    -fx-padding: 5px 0px;
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #d8dee9;
+    -fx-font-size: 14px;
+    -fx-alignment: center-left;
+    -fx-padding: 10px 15px;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
+    -fx-pref-width: 190px;
+}
+
+.nav-button:hover {
+    -fx-background-color: #3b4252;
+    -fx-text-fill: white;
+}
+
+.nav-button-active {
+    -fx-background-color: #5e81ac;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Content Area Styles */
+.content-area {
+    -fx-background-color: #f0f2f5;
+    -fx-padding: 0;
+}
+
+.content-header {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);
+    -fx-padding: 20px 30px;
+}
+
+.page-title {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
+    -fx-text-fill: #2e3440;
+}
+
+.page-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #4c566a;
+    -fx-opacity: 0.8;
 }
 
 /* Button Styles */
 .button {
     -fx-padding: 8px 16px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 4px;
+    -fx-font-weight: normal;
+    -fx-background-radius: 6px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);
-    -fx-transition: all 0.3s;
+    -fx-transition-duration: 0.2s;
+    -fx-border-width: 0;
 }
 
 .button:hover {
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 2);
+    -fx-opacity: 0.9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 1);
 }
 
-#addActivity {
-    -fx-background-color: #4CAF50;
+.add-button {
+    -fx-background-color: #a3be8c; /* Green */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.manage-button {
+    -fx-background-color: #5e81ac; /* Blue */
     -fx-text-fill: white;
 }
 
-#addActivity:hover {
-    -fx-background-color: #43A047;
-}
-
-#manageCategories {
-    -fx-background-color: #2196F3;
+.logout-button {
+    -fx-background-color: #bf616a; /* Red */
     -fx-text-fill: white;
+    -fx-pref-width: 190px;
 }
 
-#manageCategories:hover {
-    -fx-background-color: #1976D2;
+/* Search Field */
+.search-container {
+    -fx-padding: 0 0 0 20;
 }
 
-#handleLogout {
-    -fx-background-color: #f44336;
-    -fx-text-fill: white;
+.search-field {
+    -fx-background-color: #eceff4;
+    -fx-border-color: transparent;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-padding: 8px 15px;
+    -fx-pref-width: 250px;
 }
 
-#handleLogout:hover {
-    -fx-background-color: #D32F2F;
+.search-field:focused {
+    -fx-background-color: white;
+    -fx-border-color: #5e81ac;
+    -fx-effect: dropshadow(three-pass-box, rgba(94,129,172,0.2), 4, 0, 0, 0);
 }
 
 /* Filter Section */
 .filter-box {
-    -fx-padding: 10px;
-    -fx-background-color: #E8F5E9;
-    -fx-border-color: #C8E6C9;
-    -fx-border-width: 1px;
-    -fx-border-radius: 4px;
-}
-
-.filter-box Label {
-    -fx-text-fill: #2E7D32;
-    -fx-font-weight: bold;
-}
-
-.combo-box, .text-field {
     -fx-background-color: white;
-    -fx-border-color: #C8E6C9;
-    -fx-border-radius: 4px;
-    -fx-padding: 5px;
+    -fx-border-color: #e5e9f0;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 15px 30px;
 }
 
-.combo-box:hover, .text-field:hover {
-    -fx-border-color: #81C784;
-}
-
-/* Activity List Header */
-.list-header {
-    -fx-background-color: linear-gradient(to right, #A5D6A7, #81C784);
-    -fx-padding: 10px;
-    -fx-border-radius: 4px 4px 0 0;
-}
-
-.list-header Label {
-    -fx-text-fill: #1B5E20;
+.filter-label {
     -fx-font-weight: bold;
+    -fx-text-fill: #2e3440;
+}
+
+.filter-category {
+    -fx-text-fill: #4c566a;
+}
+
+.filter-combo {
+    -fx-background-color: #eceff4;
+    -fx-border-color: transparent;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 6px;
+    -fx-pref-width: 130px;
+}
+
+.filter-combo:focused {
+    -fx-border-color: #5e81ac;
+}
+
+/* Card Container */
+.card-container {
+    -fx-background-color: transparent;
+    -fx-padding: 20px 30px;
+}
+
+/* Task List Header */
+.list-header {
+    -fx-background-color: #eceff4;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-border-color: #e5e9f0;
+    -fx-border-width: 0;
+    -fx-border-radius: 8px 8px 0 0;
+}
+
+.column-header {
+    -fx-text-fill: #4c566a;
+    -fx-font-weight: bold;
+}
+
+/* Task List */
+.task-list {
+    -fx-background-color: white;
+    -fx-background-radius: 0 0 8px 8px;
+    -fx-border-color: #e5e9f0;
+    -fx-border-width: 0 1px 1px 1px;
+    -fx-border-radius: 0 0 8px 8px;
+}
+
+.task-scroll-pane {
+    -fx-background-color: white;
+    -fx-background: white;
+    -fx-border-width: 0;
+    -fx-background-radius: 0 0 8px 8px;
+}
+
+.task-scroll-pane .viewport {
+    -fx-background-color: white;
+}
+
+.task-scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 12;
+}
+
+.task-scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #d8dee9;
+    -fx-background-radius: 6px;
 }
 
 /* Activity Items */
 .activity-item {
     -fx-background-color: white;
-    -fx-border-color: #E8F5E9;
-    -fx-border-width: 1px;
-    -fx-padding: 10px;
-    -fx-background-radius: 4px;
+    -fx-border-color: #eceff4;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 12px 16px;
+    -fx-alignment: center-left;
 }
 
 .activity-item:hover {
-    -fx-background-color: #F1F8E9;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
+    -fx-background-color: #f8f9fb;
 }
 
-/* ScrollPane */
-.scroll-pane {
-    -fx-background-color: transparent;
-    -fx-border-color: #E8F5E9;
-    -fx-border-width: 1px;
-    -fx-border-radius: 0 0 4px 4px;
-}
-
-.scroll-pane .viewport {
-    -fx-background-color: #F5F9F5;
+.activity-item .button {
+    -fx-padding: 5px 10px;
+    -fx-font-size: 11px;
+    -fx-background-radius: 4px;
 }
 
 /* Status Indicators */
 .status-selesai {
-    -fx-text-fill: #2E7D32;
+    -fx-text-fill: #a3be8c;
     -fx-font-weight: bold;
+    -fx-background-color: rgba(163, 190, 140, 0.2);
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 8px;
 }
 
 .status-belum {
-    -fx-text-fill: #FF5722;
+    -fx-text-fill: #d08770;
     -fx-font-weight: bold;
+    -fx-background-color: rgba(208, 135, 112, 0.2);
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 8px;
 }
 
 /* Priority Indicators */
-.priority-tinggi {
-    -fx-text-fill: #D32F2F;
+.priority-high {
+    -fx-text-fill: #bf616a;
     -fx-font-weight: bold;
+    -fx-background-color: rgba(191, 97, 106, 0.2);
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 8px;
+}
+
+.priority-medium {
+    -fx-text-fill: #d08770;
+    -fx-font-weight: bold;
+    -fx-background-color: rgba(208, 135, 112, 0.2);
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 8px;
+}
+
+.priority-low {
+    -fx-text-fill: #a3be8c;
+    -fx-font-weight: bold;
+    -fx-background-color: rgba(163, 190, 140, 0.2);
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 8px;
+}
+
+/* For compatibility with existing code */
+.priority-tinggi {
+    -fx-text-fill: #bf616a;
+    -fx-font-weight: bold;
+    -fx-background-color: rgba(191, 97, 106, 0.2);
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 8px;
 }
 
 .priority-sedang {
-    -fx-text-fill: #FFA000;
+    -fx-text-fill: #d08770;
     -fx-font-weight: bold;
+    -fx-background-color: rgba(208, 135, 112, 0.2);
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 8px;
 }
 
 .priority-rendah {
-    -fx-text-fill: #689F38;
+    -fx-text-fill: #a3be8c;
     -fx-font-weight: bold;
+    -fx-background-color: rgba(163, 190, 140, 0.2);
+    -fx-background-radius: 12px;
+    -fx-padding: 3px 8px;
 }
-
-.activity-row > Label {
-    -fx-padding: 5 0 5 0;
-}
-
-.activity-header {
-    -fx-font-weight: bold;
-    -fx-padding: 0 0 5 0;
-    -fx-border-color: #ccc;
-    -fx-border-width: 0 0 1 0;
-}
-.activity-item {
-    -fx-padding: 5 0 5 0;
-}
-

@@ -20,10 +20,14 @@ import org.example.project.Util.Manager.SessionManager;
 import org.example.project.Util.Storage;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.example.project.Util.Manager.SessionManager.currentSession;
+import static org.example.project.Util.Manager.SessionManager.getActiveUserId;
 
 public class DashboardController {
 
@@ -44,10 +48,20 @@ public class DashboardController {
 
     private String currentUser;
 
+    private Stage primaryStage;
+
+    private static final int BASE_HEIGHT = 500;
+    private static final int ROW_HEIGHT = 55;
+    private static final int MAX_VISIBLE_ACTIVITIES = 6;
+
+    public void setPrimaryStage(Stage stage) {
+        this.primaryStage = stage;
+    }
+
     @FXML
     public void initialize() {
         // Get current user from session
-        Integer userId = SessionManager.getActiveUserId();
+        Integer userId = getActiveUserId();
         if (userId != null) {
             // Get username from user ID
             String username = Storage.getUsernameById(userId);
@@ -58,6 +72,26 @@ public class DashboardController {
             }
         } else {
             currentUser = "guest"; // Default user if no session
+        }
+
+        // >>> Apply UI scale and font size preferences from session
+        double fontSize = SessionManager.getFontSize(); // misal default 12
+        double uiScale = SessionManager.getUiScale();   // misal default 1.0
+
+        // Terapkan ke root VBox jika mungkin
+        if (activityList.getScene() != null && activityList.getScene().getRoot() != null) {
+            activityList.getScene().getRoot().setStyle("-fx-font-size: " + fontSize + "px;");
+            activityList.getScene().getRoot().setScaleX(uiScale);
+            activityList.getScene().getRoot().setScaleY(uiScale);
+        } else {
+            // Jika belum tersedia (karena initialize dipanggil sebelum scene dimuat), jalankan nanti
+            activityList.sceneProperty().addListener((obs, oldScene, newScene) -> {
+                if (newScene != null && newScene.getRoot() != null) {
+                    newScene.getRoot().setStyle("-fx-font-size: " + fontSize + "px;");
+                    newScene.getRoot().setScaleX(uiScale);
+                    newScene.getRoot().setScaleY(uiScale);
+                }
+            });
         }
 
         // Initialize filter comboboxes
@@ -73,7 +107,26 @@ public class DashboardController {
 
         // Load activities
         loadActivities();
+
+        // Check for today's activities
+        checkReminders();
     }
+
+    private void checkReminders() {
+        List<Activity> activities = Storage.getActivities(currentUser);
+        long count = activities.stream()
+                .filter(a -> a.getDate().equals(LocalDate.now()) && !a.isCompleted())
+                .count();
+
+        if (count > 0) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Pengingat Aktivitas");
+            alert.setHeaderText(null);
+            alert.setContentText("Ada " + count + " aktivitas hari ini");
+            alert.showAndWait();
+        }
+    }
+
 
     private void loadActivities() {
         // Clear current activities
@@ -120,43 +173,87 @@ public class DashboardController {
             HBox activityItem = createActivityItem(activity);
             activityList.getChildren().add(activityItem);
         }
+
+        // Adjust window height based on number of activities
+        adjustWindowHeight();
+    }
+
+    private void adjustWindowHeight() {
+        if (primaryStage == null) return;
+
+        int activityCount = activityList.getChildren().size();
+        int visibleCount = Math.min(activityCount, MAX_VISIBLE_ACTIVITIES);
+
+        double newHeight = BASE_HEIGHT + (visibleCount * ROW_HEIGHT);
+        primaryStage.setHeight(newHeight);
+
+        // Ensure minimum width for the new layout with sidebar
+        if (primaryStage.getWidth() < 900) {
+            primaryStage.setWidth(900);
+        }
     }
 
     private HBox createActivityItem(Activity activity) {
         HBox item = new HBox(10);
-        item.setPadding(new Insets(5));
-        item.setStyle("-fx-background-color: #f5f5f5; -fx-border-color: #e0e0e0; -fx-border-radius: 5;");
+        item.getStyleClass().add("activity-item");
+        item.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
 
         // Activity details
         Label titleLabel = new Label(activity.getTitle());
-        titleLabel.setPrefWidth(150);
+        titleLabel.setPrefWidth(180);
+        titleLabel.setMaxWidth(180);
+        titleLabel.setMinWidth(180);
+        titleLabel.setWrapText(true);
 
         Label dateLabel = new Label(activity.getDate().toString());
         dateLabel.setPrefWidth(100);
+        dateLabel.setMaxWidth(100);
+        dateLabel.setMinWidth(100);
 
-        Label categoryLabel = new Label(activity.getCategory().getName());
-        categoryLabel.setPrefWidth(100);
+        Label categoryLabel = new Label(activity.getCategory() != null ? activity.getCategory().getName() : "-");
+        categoryLabel.setPrefWidth(120);
+        categoryLabel.setMaxWidth(120);
+        categoryLabel.setMinWidth(120);
 
-        Label priorityLabel = new Label(activity.getPriority());
-        priorityLabel.setPrefWidth(80);
+        String priorityText = activity.getPriority() != null ? activity.getPriority() : "-";
+        Label priorityLabel = new Label(priorityText);
+        priorityLabel.setPrefWidth(100);
+        priorityLabel.setMaxWidth(100);
+        priorityLabel.setMinWidth(100);
+        if (activity.getPriority() != null) {
+            priorityLabel.getStyleClass().add("priority-" + activity.getPriority().toLowerCase());
+        }
 
         Label statusLabel = new Label(activity.isCompleted() ? "Selesai" : "Belum");
-        statusLabel.setPrefWidth(80);
+        statusLabel.setPrefWidth(100);
+        statusLabel.setMaxWidth(100);
+        statusLabel.setMinWidth(100);
+        statusLabel.getStyleClass().add(activity.isCompleted() ? "status-selesai" : "status-belum");
 
-        // Action buttons
+        // Action buttons in an HBox
+        HBox actionBox = new HBox(5);
+        actionBox.setAlignment(javafx.geometry.Pos.CENTER);
+        actionBox.setPrefWidth(180);
+        actionBox.setMaxWidth(180);
+        actionBox.setMinWidth(180);
+
         Button editButton = new Button("Edit");
+        editButton.getStyleClass().add("manage-button");
         editButton.setOnAction(e -> editActivity(activity));
 
         Button deleteButton = new Button("Hapus");
+        deleteButton.getStyleClass().add("logout-button");
         deleteButton.setOnAction(e -> deleteActivity(activity));
 
-        Button toggleButton = new Button(activity.isCompleted() ? "Batal" : "Selesai");
+        Button toggleButton = new Button(activity.isCompleted() ? "Tandai Belum" : "Tandai Selesai");
+        toggleButton.getStyleClass().add(activity.isCompleted() ? "add-button" : "add-button");
         toggleButton.setOnAction(e -> toggleActivityStatus(activity));
+
+        actionBox.getChildren().addAll(editButton, deleteButton, toggleButton);
 
         // Add all components to the item
         item.getChildren().addAll(
-            titleLabel, dateLabel, categoryLabel, priorityLabel, statusLabel,
-            editButton, deleteButton, toggleButton
+            titleLabel, dateLabel, categoryLabel, priorityLabel, statusLabel, actionBox
         );
 
         return item;
@@ -281,6 +378,15 @@ public class DashboardController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/login-view.fxml"));
             Parent loginRoot = loader.load();
             Scene loginScene = new Scene(loginRoot);
+
+            // Load login CSS
+            URL cssURL = getClass().getResource("/css/login.css");
+            if (cssURL != null) {
+                loginScene.getStylesheets().add(cssURL.toExternalForm());
+            } else {
+                System.err.println("File login.css tidak ditemukan.");
+            }
+
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(loginScene);
             stage.setTitle("Login");
@@ -298,4 +404,10 @@ public class DashboardController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    public static void initializeSession() {
+        getActiveUserId(); // Load session data on startup
+        System.out.println("Session initialized: " + currentSession);
+    }
+
 }

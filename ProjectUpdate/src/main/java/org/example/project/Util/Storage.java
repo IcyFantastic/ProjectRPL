@@ -14,7 +14,8 @@ public class Storage {
         String sqlCreateUsers = "CREATE TABLE IF NOT EXISTS users (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "username TEXT NOT NULL UNIQUE," +
-                "password TEXT NOT NULL" +
+                "password TEXT NOT NULL," +
+                "pet_name TEXT" +
                 ");";
 
         String sqlCreateCategories = "CREATE TABLE IF NOT EXISTS categories (" +
@@ -56,12 +57,17 @@ public class Storage {
     // --- User management ---
 
     public static boolean addUser(String username, String password) {
-        String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+        return addUser(username, password, null);
+    }
+
+    public static boolean addUser(String username, String password, String petName) {
+        String sql = "INSERT INTO users (username, password, pet_name) VALUES (?, ?, ?)";
         try (Connection conn = DatabaseHelper.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, username);
             stmt.setString(2, password);
+            stmt.setString(3, petName);
             stmt.executeUpdate();
             return true;
 
@@ -137,6 +143,22 @@ public class Storage {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean validatePetName(String username, String petName) {
+        String sql = "SELECT 1 FROM users WHERE username = ? AND pet_name = ?";
+        try (Connection conn = DatabaseHelper.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+            stmt.setString(2, petName);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // --- Category management ---

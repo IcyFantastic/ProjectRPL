@@ -1,92 +1,135 @@
-/* ===== GLOBAL ROOT ===== */
+/* AtlantaFX-inspired Register Styles */
+
+/* Base Styles */
 .root {
-    -fx-font-family: 'Segoe UI', sans-serif;
-    -fx-background-color: white;
+    -fx-font-family: 'Segoe UI', 'SF Pro Display', Roboto, sans-serif;
+    -fx-background-color: #f0f2f5;
+    -fx-font-size: 13px;
 }
 
-/* ===== JUDUL FORM ===== */
+/* Form panel */
+.form-pane {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);
+}
+
+/* Form title */
 .form-title {
     -fx-font-size: 28px;
     -fx-font-weight: bold;
-    -fx-text-fill: #333333;
-    -fx-alignment: center;
-    -fx-transition: all 0.3s ease-in-out;
+    -fx-text-fill: #2e3440;
+    -fx-padding: 0 0 10px 0;
 }
 
-/* ===== FIELD INPUT ===== */
+/* Input fields */
 .input-field {
-    -fx-background-color: transparent;
-    -fx-border-width: 0 0 2 0;
-    -fx-border-color: #26A69A;
-    -fx-padding: 5 0 5 0;
+    -fx-background-color: #eceff4;
+    -fx-background-radius: 6px;
+    -fx-border-color: transparent;
+    -fx-padding: 12px 15px;
     -fx-font-size: 14px;
-    -fx-transition: all 0.3s ease-in-out;
+    -fx-pref-height: 40px;
 }
 
-/* Bisa dipakai untuk .text-field & .password-field juga */
+.input-field:focused {
+    -fx-background-color: white;
+    -fx-border-color: #5e81ac;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-effect: dropshadow(three-pass-box, rgba(94,129,172,0.2), 4, 0, 0, 0);
+}
+
+/* For compatibility with existing code */
 .text-field, .password-field {
-    -fx-background-color: transparent;
-    -fx-border-width: 0 0 2 0;
-    -fx-border-color: #26A69A;
-    -fx-padding: 5 0 5 0;
+    -fx-background-color: #eceff4;
+    -fx-background-radius: 6px;
+    -fx-border-color: transparent;
+    -fx-padding: 12px 15px;
     -fx-font-size: 14px;
-    -fx-transition: all 0.3s ease-in-out;
 }
 
-/* ===== TOMBOL AKSI ===== */
-.form-button {
-    -fx-background-color: #26A69A;
+.text-field:focused, .password-field:focused {
+    -fx-background-color: white;
+    -fx-border-color: #5e81ac;
+    -fx-border-width: 1px;
+    -fx-border-radius: 6px;
+    -fx-effect: dropshadow(three-pass-box, rgba(94,129,172,0.2), 4, 0, 0, 0);
+}
+
+/* Primary button */
+.primary-button {
+    -fx-background-color: #5e81ac;
     -fx-text-fill: white;
     -fx-font-size: 16px;
-    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
+    -fx-cursor: hand;
     -fx-pref-width: 200px;
     -fx-pref-height: 40px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);
+    -fx-transition-duration: 0.2s;
+}
+
+.primary-button:hover {
+    -fx-background-color: #81a1c1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);
+}
+
+/* For compatibility with existing code */
+.form-button {
+    -fx-background-color: #5e81ac;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6px;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0.3, 0, 2);
-    -fx-transition: all 0.3s ease-in-out;
+    -fx-pref-width: 200px;
+    -fx-pref-height: 40px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);
+    -fx-transition-duration: 0.2s;
 }
 
 .form-button:hover {
-    -fx-background-color: #2BBBAD;
-    -fx-scale-x: 1.03;
-    -fx-scale-y: 1.03;
+    -fx-background-color: #81a1c1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0, 0, 3);
 }
 
-/* ===== LINK (HYPERLINK / KEMBALI) ===== */
+/* Hyperlinks */
 .form-link {
-    -fx-text-fill: #26A69A;
+    -fx-text-fill: #5e81ac;
     -fx-underline: false;
-    -fx-font-size: 13px;
-    -fx-transition: all 0.2s ease-in-out;
+    -fx-font-size: 14px;
 }
 
 .form-link:hover {
+    -fx-text-fill: #81a1c1;
     -fx-underline: true;
-    -fx-text-fill: #2BBBAD;
 }
 
-/* ===== BRANDING PANEL KIRI ===== */
-.branding-pane, #brandingPane {
-    -fx-background-color: #26A69A;
-    -fx-padding: 40;
+/* Branding panel */
+.branding-pane {
+    -fx-background-color: #2e3440;
+    -fx-padding: 40px;
     -fx-alignment: center;
 }
 
 .branding-small {
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-text-alignment: center;
+    -fx-text-fill: #d8dee9;
+    -fx-font-size: 16px;
+    -fx-opacity: 0.8;
 }
 
 .branding-title {
+    -fx-text-fill: white;
     -fx-font-size: 36px;
     -fx-font-weight: bold;
-    -fx-text-fill: white;
+    -fx-padding: 10px 0 20px 0;
 }
 
 .branding-text {
-    -fx-text-fill: white;
+    -fx-text-fill: #e5e9f0;
     -fx-font-size: 16px;
     -fx-wrap-text: true;
     -fx-text-alignment: center;
+    -fx-opacity: 0.9;
 }

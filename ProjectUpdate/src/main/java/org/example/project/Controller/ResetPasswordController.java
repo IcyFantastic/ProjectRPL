@@ -1,21 +1,29 @@
 package org.example.project.Controller;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.example.project.Model.User;
 import org.example.project.Util.Storage;
 
+import java.net.URL;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -33,6 +41,7 @@ public class ResetPasswordController {
         String username = usernameField.getText();
         String newPassword = newPasswordField.getText();
         String confirmPassword = confirmPasswordField.getText();
+        String petName = backupField.getText().trim();
 
         if (!Pattern.matches("^[a-zA-Z0-9]{4,25}$", username)) {
             show("Username tidak valid");
@@ -45,8 +54,18 @@ public class ResetPasswordController {
             return;
         }
 
+        if (petName.isEmpty()) {
+            show("Nama hewan peliharaan tidak boleh kosong");
+            return;
+        }
+
         if (!Storage.userExists(username)) {
             show("Username tidak ditemukan");
+            return;
+        }
+
+        if (!Storage.validatePetName(username, petName)) {
+            show("Nama hewan peliharaan tidak sesuai");
             return;
         }
 
@@ -64,39 +83,107 @@ public class ResetPasswordController {
         success.showAndWait();
 
         Stage s = (Stage) usernameField.getScene().getWindow();
-        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"))));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"));
+        Scene scene = new Scene(root);
+
+        // Load login CSS
+        URL cssURL = getClass().getResource("/css/login.css");
+        if (cssURL != null) {
+            scene.getStylesheets().add(cssURL.toExternalForm());
+        } else {
+            System.err.println("File login.css tidak ditemukan.");
+        }
+
+        s.setScene(scene);
         s.setTitle("Login");
     }
 
     @FXML
     private void backToLogin() throws Exception {
         Stage s = (Stage) usernameField.getScene().getWindow();
-        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"))));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"));
+        Scene scene = new Scene(root);
+
+        // Load login CSS
+        URL cssURL = getClass().getResource("/css/login.css");
+        if (cssURL != null) {
+            scene.getStylesheets().add(cssURL.toExternalForm());
+        } else {
+            System.err.println("File login.css tidak ditemukan.");
+        }
+
+        s.setScene(scene);
         s.setTitle("Login");
     }
 
     @FXML
     private void initialize() {
-        // Slide Up animasi form
-        TranslateTransition tt = new TranslateTransition(Duration.millis(500), formVBox);
-        tt.setFromY(300);
-        tt.setToY(0);
-        tt.play();
+        // Set initial states
+        formVBox.setOpacity(0);
+        leftPanel.setOpacity(0);
+        rightPanel.setOpacity(0);
 
-        // Fade in/pulse background kiri-kanan
-        FadeTransition leftFade = new FadeTransition(Duration.seconds(1.5), leftPanel);
-        leftFade.setFromValue(0.9);
-        leftFade.setToValue(1.0);
-        leftFade.setAutoReverse(true);
-        leftFade.setCycleCount(FadeTransition.INDEFINITE);
-        leftFade.play();
+        // Modern gradient-like effect for panels
+        SequentialTransition sequence = new SequentialTransition();
 
-        FadeTransition rightFade = new FadeTransition(Duration.seconds(1.5), rightPanel);
-        rightFade.setFromValue(0.9);
-        rightFade.setToValue(1.0);
-        rightFade.setAutoReverse(true);
-        rightFade.setCycleCount(FadeTransition.INDEFINITE);
-        rightFade.play();
+        // Left panel fade in with subtle scale
+        FadeTransition leftFade = new FadeTransition(Duration.millis(800), leftPanel);
+        leftFade.setFromValue(0);
+        leftFade.setToValue(1);
+
+        ScaleTransition leftScale = new ScaleTransition(Duration.millis(1000), leftPanel);
+        leftScale.setFromX(0.98);
+        leftScale.setFromY(0.98);
+        leftScale.setToX(1);
+        leftScale.setToY(1);
+        leftScale.setInterpolator(javafx.animation.Interpolator.EASE_OUT);
+
+        ParallelTransition leftAnimation = new ParallelTransition(leftFade, leftScale);
+
+        // Right panel fade in with subtle scale (delayed)
+        FadeTransition rightFade = new FadeTransition(Duration.millis(800), rightPanel);
+        rightFade.setFromValue(0);
+        rightFade.setToValue(1);
+
+        ScaleTransition rightScale = new ScaleTransition(Duration.millis(1000), rightPanel);
+        rightScale.setFromX(0.98);
+        rightScale.setFromY(0.98);
+        rightScale.setToX(1);
+        rightScale.setToY(1);
+        rightScale.setInterpolator(javafx.animation.Interpolator.EASE_OUT);
+
+        ParallelTransition rightAnimation = new ParallelTransition(rightFade, rightScale);
+
+        // Form animation (most delayed)
+        PauseTransition formDelay = new PauseTransition(Duration.millis(200));
+
+        FadeTransition formFade = new FadeTransition(Duration.millis(900), formVBox);
+        formFade.setFromValue(0);
+        formFade.setToValue(1);
+
+        TranslateTransition formSlide = new TranslateTransition(Duration.millis(900), formVBox);
+        formSlide.setFromY(25);
+        formSlide.setToY(0);
+        formSlide.setInterpolator(javafx.animation.Interpolator.EASE_OUT);
+
+        ParallelTransition formAnimation = new ParallelTransition(formFade, formSlide);
+
+        // Sequence all animations with slight delays
+        sequence.getChildren().addAll(
+            leftAnimation,
+            new PauseTransition(Duration.millis(150)),
+            rightAnimation,
+            formDelay,
+            formAnimation
+        );
+
+        sequence.play();
+
+        // Add subtle shadow effect after animation completes
+        sequence.setOnFinished(e -> {
+            leftPanel.setEffect(new DropShadow(10, Color.rgb(0, 0, 0, 0.2)));
+            rightPanel.setEffect(new DropShadow(10, Color.rgb(0, 0, 0, 0.2)));
+        });
     }
 
 

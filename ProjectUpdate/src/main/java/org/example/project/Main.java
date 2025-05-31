@@ -1,5 +1,6 @@
 package org.example.project;
 
+import org.example.project.Controller.DashboardController;
 import org.example.project.Util.Manager.SessionManager;
 import org.example.project.Util.Storage;
 import javafx.application.Application;
@@ -48,14 +49,21 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(fxmlLocation);
             Parent root = loader.load();
 
+            // If loading dashboard, set the primary stage in the controller
+            if (username != null) {
+                DashboardController controller = loader.getController();
+                controller.setPrimaryStage(stage);
+            }
+
             Scene scene = new Scene(root);
 
-            // Load CSS
-            URL cssURL = getClass().getResource("/css/login.css");
+            // Load appropriate CSS based on the view
+            String cssFile = username != null ? "/css/dashboard.css" : "/css/login.css";
+            URL cssURL = getClass().getResource(cssFile);
             if (cssURL != null) {
                 scene.getStylesheets().add(cssURL.toExternalForm());
             } else {
-                System.err.println("File login.css tidak ditemukan.");
+                System.err.println("File " + cssFile + " tidak ditemukan.");
             }
 
             // Apply UI settings from session
@@ -97,6 +105,8 @@ public class Main extends Application {
 
         System.out.println("Applied UI settings: fontSize=" + fontSize + ", uiScale=" + uiScale);
     }
+
+
 
     public static void main(String[] args) {
         launch();

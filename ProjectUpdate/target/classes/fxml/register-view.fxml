@@ -14,15 +14,15 @@
         <!-- Left panel (Form Register) -->
         <AnchorPane fx:id="formPane"
                     prefWidth="400" prefHeight="500"
-                    style="-fx-background-color: white;">
+                    styleClass="form-pane">
 
             <!-- Form container -->
             <VBox fx:id="formVBox"
                   alignment="CENTER"
                   spacing="20"
                   prefWidth="300"
-                  layoutX="50" layoutY="100"
-                  AnchorPane.topAnchor="100.0"
+                  layoutX="50" layoutY="80"
+                  AnchorPane.topAnchor="80.0"
                   AnchorPane.leftAnchor="50.0"
                   AnchorPane.rightAnchor="50.0">
 
@@ -53,7 +53,7 @@
                 <!-- Register Button -->
                 <Button text="REGISTER"
                         onAction="#handleRegister"
-                        styleClass="form-button" />
+                        styleClass="primary-button" />
 
                 <!-- Back to Login -->
                 <Hyperlink text="Kembali ke Login"
@@ -69,9 +69,13 @@
               alignment="CENTER"
               styleClass="branding-pane">
 
-            <Label text="#002" styleClass="branding-small" />
-            <Label text="REGISTER UI" styleClass="branding-title" />
-            <Label text="Daftarkan dirimu dan mulai catatan harianmu"
+            <padding>
+                <Insets top="40" right="30" bottom="40" left="30"/>
+            </padding>
+
+            <Label text="GROUP 7" styleClass="branding-small" />
+            <Label text="TO-DO LIST" styleClass="branding-title" />
+            <Label text="Register an account to start organizing your tasks and boost your productivity"
                    wrapText="true"
                    styleClass="branding-text" />
         </VBox>
