@@ -1,10 +1,10 @@
 package org.example.project.Model;
-import java.io.Serializable;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Activity implements Serializable
-{
+public class Activity implements Serializable {
+    private int id;  // baru
     private String title;
     private LocalDate date;
     private Category category;
@@ -12,8 +12,11 @@ public class Activity implements Serializable
     private boolean completed;
     private String user;
     private String description;
+    private boolean done;
 
-    public Activity(String title, LocalDate date, Category category, String priority, boolean completed, String user) {
+    // Constructor baru dengan id
+    public Activity(int id, String title, LocalDate date, Category category, String priority, boolean completed, String user) {
+        this.id = id;
         this.title = title;
         this.date = date;
         this.category = category;
@@ -21,6 +24,23 @@ public class Activity implements Serializable
         this.completed = completed;
         this.user = user;
     }
+
+    // Constructor lama tanpa id (misal untuk buat baru sebelum disimpan)
+    public Activity(String title, LocalDate date, Category category, String priority, boolean completed, String user) {
+        this(0, title, date, category, priority, completed, user);
+    }
+
+    // getter/setter id
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    // getter/setter lain tetap sama...
+    // ...
 
     public String getTitle() {
         return title;
@@ -79,11 +99,19 @@ public class Activity implements Serializable
         return this;
     }
 
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
 
     @Override
     public String toString() {
         return "Activity{" +
-                "title='" + title + '\'' +
+                "id=" + id +
+                ", title='" + title + '\'' +
                 ", date=" + date +
                 ", category=" + (category != null ? category.getName() : "None") +
                 ", priority='" + priority + '\'' +
@@ -91,6 +119,4 @@ public class Activity implements Serializable
                 ", user='" + user + '\'' +
                 '}';
     }
-
-
 }

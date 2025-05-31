@@ -1,6 +1,5 @@
 package org.example.project.Controller;
 
-import org.example.project.Model.User;
 import org.example.project.Util.Storage;
 
 import javafx.animation.TranslateTransition;
@@ -12,7 +11,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class RegisterController {
@@ -39,35 +37,36 @@ public class RegisterController {
 
     @FXML
     private void handleRegister() throws Exception {
-        String u = usernameField.getText();
+        String u = usernameField.getText().trim();
         String p = passwordField.getText();
         String c = confirmField.getText();
 
         if (!Pattern.matches("^[a-zA-Z0-9]{4,25}$", u)) {
-            show("Username harus 4-25 alfanumerik");
+            show("Username harus 4-25 karakter alfanumerik.");
             return;
         }
 
         if (!p.equals(c) || !Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^a-zA-Z0-9]).{4,}$", p)) {
-            show("Password tidak memenuhi kriteria (min 4 char, ada huruf besar, kecil, angka, simbol)");
+            show("Password tidak memenuhi kriteria:\n- Minimal 4 karakter\n- Ada huruf besar, kecil, angka, simbol");
             return;
         }
 
-        List<User> users = Storage.getUsers();
-        for (User user : users) {
-            if (user.getUsername().equals(u)) {
-                show("Username sudah terdaftar");
-                return;
-            }
+        if (Storage.userExists(u)) {
+            show("Username sudah terdaftar.");
+            return;
         }
 
-        Storage.addUser(new User(u, p));
+        boolean success = Storage.addUser(u, p);
+        if (!success) {
+            show("Gagal menyimpan user ke database.");
+            return;
+        }
 
-        Alert success = new Alert(Alert.AlertType.INFORMATION);
-        success.setTitle("Registrasi Berhasil");
-        success.setHeaderText(null);
-        success.setContentText("Akun berhasil dibuat! Silakan login.");
-        success.showAndWait();
+        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+        successAlert.setTitle("Registrasi Berhasil");
+        successAlert.setHeaderText(null);
+        successAlert.setContentText("Akun berhasil dibuat! Silakan login.");
+        successAlert.showAndWait();
 
         Stage s = (Stage) usernameField.getScene().getWindow();
         s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"))));
@@ -76,26 +75,16 @@ public class RegisterController {
 
     @FXML
     private void backToLogin() throws Exception {
-        showAlert(Alert.AlertType.INFORMATION, "Create Account", "Navigasi ke halaman login...");
-        // TODO: Implementasi scene login-view.fxml
         Stage s = (Stage) usernameField.getScene().getWindow();
         s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"))));
         s.setTitle("Login");
     }
 
-    private void show(String m) {
-        Alert a = new Alert(Alert.AlertType.ERROR);
-        a.setTitle("Error");
-        a.setHeaderText(null);
-        a.setContentText(m);
-        a.showAndWait();
-    }
-
-    private void showAlert(Alert.AlertType type, String title, String msg) {
-        Alert a = new Alert(type);
-        a.setTitle(title);
-        a.setHeaderText(null);
-        a.setContentText(msg);
-        a.showAndWait();
+    private void show(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Kesalahan");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

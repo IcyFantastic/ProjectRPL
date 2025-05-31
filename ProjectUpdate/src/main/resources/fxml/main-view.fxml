@@ -1,42 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.layout.BorderPane?>
+<!--<?import javafx.scene.control.Button?>-->
+<!--<?import javafx.scene.control.ComboBox?>-->
+<!--<?import javafx.scene.control.Separator?>-->
+<!--<?import javafx.scene.control.TableColumn?>-->
+<!--<?import javafx.scene.control.TableView?>-->
+<!--<?import javafx.scene.control.TextField?>-->
+<!--<?import javafx.scene.control.ToolBar?>-->
+<!--<?import javafx.scene.layout.BorderPane?>-->
 
-<BorderPane prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.project.Controller.MainController" id="mainContainer"
-            stylesheets="@../css/styles.css">
-    <top>
-        <ToolBar>
-            <Button onAction="#addActivity" text="Tambah" />
-            <Button onAction="#editActivity" text="Edit" />
-            <Button onAction="#deleteActivity" text="Hapus" />
-            <Button onAction="#markCompleted" text="Mark Selesai" />
-            <Separator />
-            <Button onAction="#manageCategories" text="Kategori" />
-            <Separator />
-            <TextField fx:id="searchField" onKeyReleased="#searchActivities" promptText="Cari..." />
-            <ComboBox fx:id="filterStatus" onAction="#filterChanged" promptText="Status" />
-            <ComboBox fx:id="filterPriority" onAction="#filterChanged" promptText="Prioritas" />
-            <ComboBox fx:id="filterCategory" onAction="#filterChanged" promptText="Kategori" />
-            <Button onAction="#handleLogout" text="Logout" />
-        </ToolBar>
-    </top>
-    <center>
-        <TableView fx:id="activityTable">
-            <columns>
-                <TableColumn fx:id="colTitle" text="Judul" />
-                <TableColumn fx:id="colDate" text="Tanggal" />
-                <TableColumn fx:id="colCategory" text="Kategori" />
-                <TableColumn fx:id="colPriority" text="Prioritas" />
-                <TableColumn fx:id="colStatus" text="Status" />
-                <TableColumn fx:id="colDescription" prefWidth="398.6666564941406" text="Deskripsi" />
-            </columns>
-        </TableView>
-    </center>
-</BorderPane>
+<!--<BorderPane prefHeight="600" prefWidth="800" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.project.Controller.MainController" id="mainContainer"-->
+<!--            stylesheets="@../css/styles.css">-->
+<!--    <top>-->
+<!--        <ToolBar>-->
+<!--            <Button onAction="#handleAdd" text="Tambah" />-->
+<!--            <Button onAction="#handleEdit" text="Edit" />-->
+<!--            <Button onAction="#handleDelete" text="Hapus" />-->
+<!--            <Button onAction="#handleMarkDone" text="Mark Selesai" />-->
+<!--            <Separator />-->
+<!--            <Button onAction="#manageCategories" text="Kategori" />-->
+<!--            <Separator />-->
+<!--            <TextField fx:id="searchField" onKeyReleased="#searchActivities" promptText="Cari..." />-->
+<!--            <ComboBox fx:id="filterStatus" onAction="#filterChanged" promptText="Status" />-->
+<!--            <ComboBox fx:id="filterPriority" onAction="#filterChanged" promptText="Prioritas" />-->
+<!--            <ComboBox fx:id="filterCategory" onAction="#filterChanged" promptText="Kategori" />-->
+<!--            <Button onAction="#handleLogout" text="Logout" />-->
+<!--        </ToolBar>-->
+<!--    </top>-->
+<!--    <center>-->
+<!--        <TableView fx:id="activityTable">-->
+<!--            <columns>-->
+<!--                <TableColumn fx:id="colTitle" text="Judul" />-->
+<!--                <TableColumn fx:id="colDate" text="Tanggal" />-->
+<!--                <TableColumn fx:id="colCategory" text="Kategori" />-->
+<!--                <TableColumn fx:id="colPriority" text="Prioritas" />-->
+<!--                <TableColumn fx:id="colStatus" text="Status" />-->
+<!--                <TableColumn fx:id="colDescription" prefWidth="398.6666564941406" text="Deskripsi" />-->
+<!--            </columns>-->
+<!--        </TableView>-->
+<!--    </center>-->
+<!--</BorderPane>-->

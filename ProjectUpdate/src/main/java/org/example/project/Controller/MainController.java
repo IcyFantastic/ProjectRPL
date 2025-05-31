@@ -1,227 +1,206 @@
-package org.example.project.Controller;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
-import org.example.project.Model.Activity;
-import org.example.project.Model.Category;
-import org.example.project.Util.Storage;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
-public class MainController {
-    @FXML
-    private VBox activityList;
-    @FXML
-    private ComboBox<String> filterStatus;
-    @FXML
-    private ComboBox<String> filterPriority;
-    @FXML
-    private ComboBox<Category> filterCategory;
-    @FXML
-    private TextField searchField;
-
-    private ObservableList<Activity> activities;
-    private ObservableList<Category> categories;
-    private String user;
-    private Runnable logoutCallback;
-
-    private Stage primaryStage;
-
-    private static final int BASE_HEIGHT = 320;
-    private static final int ROW_HEIGHT = 55;
-    private static final int MAX_VISIBLE_ACTIVITIES = 6;
-
-    public void setPrimaryStage(Stage stage) {
-        this.primaryStage = stage;
-    }
-
-    public void initData(String username) {
-        this.user = username;
-
-        categories = FXCollections.observableArrayList(Storage.getCategories().stream()
-                .filter(c -> c.getUser().equals(user))
-                .collect(Collectors.toList()));
-        categories.add(new Category(""));
-        filterCategory.setItems(categories);
-
-        activities = FXCollections.observableArrayList(Storage.getActivities().stream()
-                .filter(a -> a.getUser().equals(user))
-                .collect(Collectors.toList()));
-
-        filterStatus.setItems(FXCollections.observableArrayList("", "Selesai", "Belum"));
-        filterPriority.setItems(FXCollections.observableArrayList("", "Tinggi", "Sedang", "Rendah"));
-
-        renderActivityList(activities);
-        checkReminders();
-    }
-
-    private void renderActivityList(List<Activity> activityData) {
-        activityList.getChildren().clear();
-
-        for (Activity a : activityData) {
-            HBox item = new HBox(10);
-            item.getStyleClass().add("activity-item");
-
-            Label title = new Label(a.getTitle());
-            title.setPrefWidth(180);
-
-            Label date = new Label(a.getDate().toString());
-            date.setPrefWidth(100);
-
-            Label cat = new Label(a.getCategory() != null ? a.getCategory().getName() : "-");
-            cat.setPrefWidth(100);
-
-            String priorityText = a.getPriority() != null ? a.getPriority() : "-";
-            Label priority = new Label(priorityText);
-            priority.setPrefWidth(80);
-            if (a.getPriority() != null) {
-                priority.getStyleClass().add("priority-" + a.getPriority().toLowerCase());
-            }
-
-            Label status = new Label(a.isCompleted() ? "Selesai" : "Belum");
-            status.setPrefWidth(80);
-            status.getStyleClass().add(a.isCompleted() ? "status-selesai" : "status-belum");
-
-            Button editBtn = new Button("Edit");
-            Button deleteBtn = new Button("Hapus");
-            Button toggleStatus = new Button("Toggle");
-
-            editBtn.setOnAction(e -> {
-                try {
-                    editActivity(a);
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
-            });
-
-            deleteBtn.setOnAction(e -> deleteActivity(a));
-
-            toggleStatus.setOnAction(e -> {
-                a.setCompleted(!a.isCompleted());
-                Storage.saveAll();
-                filterChanged();
-            });
-
-            item.getChildren().addAll(title, date, cat, priority, status, editBtn, deleteBtn, toggleStatus);
-            activityList.getChildren().add(item);
-        }
-
-        adjustWindowHeight();
-    }
-
-    private void adjustWindowHeight() {
-        if (primaryStage == null) return;
-
-        int activityCount = activityList.getChildren().size();
-        int visibleCount = Math.min(activityCount, MAX_VISIBLE_ACTIVITIES);
-
-        double newHeight = BASE_HEIGHT + (visibleCount * ROW_HEIGHT);
-        primaryStage.setHeight(newHeight);
-    }
-
-    private void checkReminders() {
-        long cnt = activities.stream()
-                .filter(a -> a.getDate().equals(LocalDate.now()) && !a.isCompleted())
-                .count();
-        if (cnt > 0) {
-            Alert a = new Alert(Alert.AlertType.INFORMATION);
-            a.setContentText("Ada " + cnt + " aktivitas hari ini");
-            a.showAndWait();
-        }
-    }
-
-    @FXML
-    private void addActivity() throws Exception {
-        Dialog<Activity> d = new ActivityDialog(user, null);
-        d.showAndWait().ifPresent(a -> {
-            a.setUser(user);
-            Storage.addActivity(a);
-            refreshActivityList();
-        });
-    }
-
-    private void editActivity(Activity sel) throws Exception {
-        Dialog<Activity> d = new ActivityDialog(user, sel);
-        d.showAndWait().ifPresent(updated -> {
-            List<Activity> all = Storage.getActivities();
-            int index = all.indexOf(sel);
-            if (index != -1) {
-                updated.setUser(user);
-                all.set(index, updated);
-                Storage.saveAll();
-            }
-            refreshActivityList();
-        });
-    }
-
-    private void deleteActivity(Activity sel) {
-        Storage.getActivities().remove(sel);
-        Storage.saveAll();
-        refreshActivityList();
-    }
-
-    @FXML
-    private void searchActivities() {
-        filterChanged();
-    }
-
-    @FXML
-    private void filterChanged() {
-        String stext = searchField.getText().toLowerCase();
-        String stat = filterStatus.getValue();
-        String pr = filterPriority.getValue();
-        Category cat = filterCategory.getValue();
-
-        List<Activity> filtered = activities.stream().filter(a ->
-                a.getTitle().toLowerCase().contains(stext) &&
-                        (stat == null || stat.isEmpty() || ((stat.equals("Selesai")) == a.isCompleted())) &&
-                        (pr == null || pr.isEmpty() || pr.equals(a.getPriority())) &&
-                        (cat == null || cat.getName().isEmpty() || cat.equals(a.getCategory()))
-        ).collect(Collectors.toList());
-
-        renderActivityList(filtered);
-    }
-
-    @FXML
-    private void manageCategories() {
-        Dialog<List<Category>> d = new CategoryDialog(user, categories);
-        d.showAndWait().ifPresent(list -> {
-            list.forEach(cat -> {
-                cat.setUser(user);
-                Storage.addCategory(cat);
-            });
-            categories.setAll(Storage.getCategories().stream()
-                    .filter(cat -> cat.getUser().equals(user))
-                    .collect(Collectors.toList()));
-        });
-    }
-
-    @FXML
-    private void handleLogout() throws Exception {
-        if (logoutCallback != null) logoutCallback.run();
-        Stage s = (Stage) activityList.getScene().getWindow();
-        s.setScene(new Scene(FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/login-view.fxml")))));
-        s.setTitle("To-Do List");
-    }
-
-    private void refreshActivityList() {
-        activities.setAll(Storage.getActivities().stream()
-                .filter(a -> a.getUser().equals(user))
-                .collect(Collectors.toList()));
-        filterChanged();
-    }
-
-    public void setOnLogout(Runnable callback) {
-        this.logoutCallback = callback;
-    }
-}
+//package org.example.project.Controller;
+//
+//import javafx.collections.FXCollections;
+//import javafx.fxml.FXML;
+//import javafx.fxml.FXMLLoader;
+//import javafx.scene.Scene;
+//import javafx.scene.control.*;
+//import javafx.scene.control.cell.PropertyValueFactory;
+//import javafx.scene.layout.HBox;
+//import javafx.scene.layout.VBox;
+//import javafx.stage.Stage;
+//import org.example.project.Model.Activity;
+//import org.example.project.Model.Category;
+//import org.example.project.Util.Manager.SessionManager;
+//import org.example.project.Util.Storage;
+//
+//import java.time.LocalDate;
+//import java.util.ArrayList;
+//import java.util.List;
+//import java.util.Optional;
+//import java.util.stream.Collectors;
+//
+//public class MainController {
+//
+//    @FXML private TableView<Activity> activityTable;
+//    @FXML private TableColumn<Activity, String> colTitle;
+//    @FXML private TableColumn<Activity, LocalDate> colDate;
+//    @FXML private TableColumn<Activity, String> colCategory;
+//    @FXML private TableColumn<Activity, String> colPriority;
+//    @FXML private TableColumn<Activity, Boolean> colStatus;
+//    @FXML private TableColumn<Activity, String> colDescription;
+//    @FXML private TextField searchField;
+//    @FXML private ComboBox<String> filterStatus;
+//    @FXML private ComboBox<String> filterPriority;
+//    @FXML private ComboBox<Category> filterCategory;
+//    @FXML private Label welcomeLabel;
+//
+//    private String user;
+//
+//    @FXML
+//    private void initialize() {
+//        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+//        colDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+//        colCategory.setCellValueFactory(new PropertyValueFactory<>("categoryName"));
+//        colPriority.setCellValueFactory(new PropertyValueFactory<>("priority"));
+//        colStatus.setCellValueFactory(new PropertyValueFactory<>("completed"));
+//        colDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
+//
+//        // Initialize filter comboboxes
+//        filterStatus.setItems(FXCollections.observableArrayList("Semua", "Selesai", "Belum Selesai"));
+//        filterPriority.setItems(FXCollections.observableArrayList("Semua", "Tinggi", "Sedang", "Rendah"));
+//    }
+//
+//    public void initData(String username) {
+//        this.user = username;
+//        welcomeLabel.setText("Selamat datang, " + user + "!");
+//
+//        filterCategory.setItems(FXCollections.observableArrayList(Storage.loadCategories(user)));
+//
+//        activityTable.setItems(FXCollections.observableArrayList(
+//                new ArrayList<>(Storage.getActivities(user))
+//        ));
+//    }
+//
+//    private void filterByCategory() {
+//        Category selected = filterCategory.getSelectionModel().getSelectedItem();
+//        if (selected == null) return;
+//
+//        activityTable.setItems(FXCollections.observableArrayList(
+//                Storage.getActivities(user).stream()
+//                        .filter(a -> a.getCategory().getName().equals(selected.getName()))
+//                        .collect(Collectors.toList())
+//        ));
+//    }
+//
+//    @FXML
+//    private void filterChanged() {
+//        String status = filterStatus.getValue();
+//        String priority = filterPriority.getValue();
+//        Category category = filterCategory.getValue();
+//
+//        // Get all activities for the user
+//        List<Activity> activities = new ArrayList<>(Storage.getActivities(user));
+//
+//        // Apply filters
+//        if (status != null && !status.equals("Semua")) {
+//            boolean completed = status.equals("Selesai");
+//            activities = activities.stream()
+//                    .filter(a -> a.isCompleted() == completed)
+//                    .collect(Collectors.toList());
+//        }
+//
+//        if (priority != null && !priority.equals("Semua")) {
+//            activities = activities.stream()
+//                    .filter(a -> priority.equals(a.getPriority()))
+//                    .collect(Collectors.toList());
+//        }
+//
+//        if (category != null) {
+//            activities = activities.stream()
+//                    .filter(a -> a.getCategory().getName().equals(category.getName()))
+//                    .collect(Collectors.toList());
+//        }
+//
+//        activityTable.setItems(FXCollections.observableArrayList(activities));
+//    }
+//
+//    @FXML
+//    private void searchActivities() {
+//        String searchText = searchField.getText().toLowerCase();
+//        if (searchText.isEmpty()) {
+//            activityTable.setItems(FXCollections.observableArrayList(Storage.getActivities(user)));
+//            return;
+//        }
+//
+//        List<Activity> filteredList = Storage.getActivities(user).stream()
+//                .filter(activity ->
+//                    activity.getTitle().toLowerCase().contains(searchText) ||
+//                    activity.getDescription().toLowerCase().contains(searchText) ||
+//                    activity.getCategory().getName().toLowerCase().contains(searchText))
+//                .collect(Collectors.toList());
+//
+//        activityTable.setItems(FXCollections.observableArrayList(filteredList));
+//    }
+//
+//    @FXML
+//    private void handleAdd() throws Exception {
+//        ActivityDialog dialog = new ActivityDialog(user, null);
+//        Optional<Activity> result = dialog.showAndWait();
+//        result.ifPresent(activity -> {
+//            Storage.addActivity(activity);
+//            activityTable.getItems().add(activity);
+//        });
+//    }
+//
+//    @FXML
+//    private void handleEdit() throws Exception {
+//        Activity selected = activityTable.getSelectionModel().getSelectedItem();
+//        if (selected == null) return;
+//
+//        ActivityDialog dialog = new ActivityDialog(user, selected);
+//        Optional<Activity> result = dialog.showAndWait();
+//        result.ifPresent(updated -> {
+//            selected.setTitle(updated.getTitle());
+//            selected.setDate(updated.getDate());
+//            selected.setCategory(updated.getCategory());
+//            selected.setPriority(updated.getPriority());
+//            selected.setDescription(updated.getDescription());
+//            Storage.updateActivity(selected);
+//            activityTable.refresh();
+//        });
+//    }
+//
+//    @FXML
+//    private void handleDelete() {
+//        Activity selected = activityTable.getSelectionModel().getSelectedItem();
+//        if (selected == null) return;
+//
+//        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+//        confirm.setTitle("Konfirmasi");
+//        confirm.setHeaderText(null);
+//        confirm.setContentText("Yakin ingin menghapus aktivitas?");
+//
+//        Optional<ButtonType> result = confirm.showAndWait();
+//        if (result.isPresent() && result.get() == ButtonType.OK) {
+//            Storage.deleteActivity(selected);
+//            activityTable.getItems().remove(selected);
+//        }
+//    }
+//
+//    @FXML
+//    private void handleLogout() throws Exception {
+//        SessionManager.clearSession();
+//        Stage s = (Stage) activityTable.getScene().getWindow();
+//        s.setScene(new Scene(FXMLLoader.load(getClass().getResource("/fxml/login-view.fxml"))));
+//        s.setTitle("Login");
+//    }
+//
+//    @FXML
+//    private void handleMarkDone() {
+//        Activity selected = activityTable.getSelectionModel().getSelectedItem();
+//        if (selected == null) return;
+//        selected.setCompleted(true);
+//        Storage.updateActivity(selected);
+//        activityTable.refresh();
+//    }
+//
+//    @FXML
+//    private void manageCategories() throws Exception {
+//        // Get current categories for the user
+//        List<Category> categories = Storage.loadCategories(user);
+//
+//        // Create and show the category dialog
+//        CategoryDialog dialog = new CategoryDialog(user, categories);
+//        Optional<List<Category>> result = dialog.showAndWait();
+//
+//        // If the dialog was confirmed and categories were updated
+//        result.ifPresent(updatedCategories -> {
+//            // Update the category filter combobox
+//            filterCategory.setItems(FXCollections.observableArrayList(Storage.loadCategories(user)));
+//
+//            // Refresh the activity table to reflect any category changes
+//            activityTable.refresh();
+//        });
+//    }
+//}

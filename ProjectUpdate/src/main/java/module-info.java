@@ -6,6 +6,7 @@ module org.example.project {
     requires com.dlsc.formsfx;
     requires org.kordamp.bootstrapfx.core;
     requires com.google.gson;
+    requires java.sql;
 
 
     opens org.example.project to javafx.fxml;

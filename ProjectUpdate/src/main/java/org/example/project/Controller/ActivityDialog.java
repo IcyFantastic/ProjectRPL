@@ -1,66 +1,112 @@
 package org.example.project.Controller;
 
-import org.example.project.Model.Activity;
-import org.example.project.Model.Category;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.util.Callback;
+import org.example.project.Model.Activity;
+import org.example.project.Model.Category;
 import org.example.project.Util.Storage;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class ActivityDialog extends Dialog<Activity> {
-    public ActivityDialog(String user, Activity act) throws Exception {
-        // Set judul dialog berdasarkan operasi (Tambah/Edit)
-        setTitle(act == null ? "Tambah Aktivitas" : "Edit Aktivitas");
 
-        // Komponen input untuk form
-        Label t1 = new Label("Judul:");
-        TextField tf1 = new TextField(act == null ? "" : act.getTitle());
+    private TextField titleField;
+    private DatePicker datePicker;
+    private ComboBox<Category> categoryCombo;
+    private ComboBox<String> priorityCombo;
+    private TextArea descriptionArea;
+    private CheckBox completedCheck;
 
-        Label t2 = new Label("Tanggal:");
-        DatePicker dp = new DatePicker(act == null ? LocalDate.now() : act.getDate());
+    public ActivityDialog(String user, Activity activityToEdit) {
+        setTitle(activityToEdit == null ? "Tambah Aktivitas" : "Edit Aktivitas");
 
-        Label t3 = new Label("Kategori:");
-        ComboBox<Category> cb = new ComboBox<>(FXCollections.observableArrayList(Storage.loadCategories(user)));
-        if (act != null) cb.setValue(act.getCategory());
+        getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-        Label t4 = new Label("Prioritas:");
-        ComboBox<String> cp = new ComboBox<>(FXCollections.observableArrayList("Tinggi", "Sedang", "Rendah"));
-        if (act != null) cp.setValue(act.getPriority());
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
 
-        Label t5 = new Label("Deskripsi:");
-        TextArea ta = new TextArea(act == null ? "" : act.getDescription());
+        titleField = new TextField();
+        titleField.setPromptText("Judul aktivitas");
 
-        // GridPane untuk tata letak form
-        GridPane gp = new GridPane();
-        gp.setHgap(10);
-        gp.setVgap(10);
-        gp.addRow(0, t1, tf1);
-        gp.addRow(1, t2, dp);
-        gp.addRow(2, t3, cb);
-        gp.addRow(3, t4, cp);
-        gp.addRow(4, t5, ta);
+        datePicker = new DatePicker(LocalDate.now());
 
-        getDialogPane().setContent(gp);
+        List<Category> categories = Storage.loadCategories(user);
+        categoryCombo = new ComboBox<>(FXCollections.observableArrayList(categories));
+        categoryCombo.setPromptText("Pilih kategori");
 
-        // Tombol OK dan Cancel
-        ButtonType ok = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
-        getDialogPane().getButtonTypes().addAll(ok, ButtonType.CANCEL);
+        priorityCombo = new ComboBox<>(FXCollections.observableArrayList("Low", "Medium", "High"));
+        priorityCombo.setPromptText("Pilih prioritas");
 
-        // Hasil dialog
-        setResultConverter(button -> {
-            if (button == ok) {
-                return new Activity(
-                        tf1.getText(),
-                        dp.getValue(),
-                        cb.getValue(),
-                        cp.getValue(),
-                        false, // Aktivitas baru default belum selesai
-                        user // Mengaitkan aktivitas dengan pengguna
-                ).setDescription(ta.getText()); // Tambahkan deskripsi jika ada
+        descriptionArea = new TextArea();
+        descriptionArea.setPromptText("Deskripsi (opsional)");
+        descriptionArea.setPrefRowCount(3);
+
+        completedCheck = new CheckBox("Selesai");
+
+        grid.add(new Label("Judul:"), 0, 0);
+        grid.add(titleField, 1, 0);
+
+        grid.add(new Label("Tanggal:"), 0, 1);
+        grid.add(datePicker, 1, 1);
+
+        grid.add(new Label("Kategori:"), 0, 2);
+        grid.add(categoryCombo, 1, 2);
+
+        grid.add(new Label("Prioritas:"), 0, 3);
+        grid.add(priorityCombo, 1, 3);
+
+        grid.add(new Label("Deskripsi:"), 0, 4);
+        grid.add(descriptionArea, 1, 4);
+
+        grid.add(completedCheck, 1, 5);
+
+        getDialogPane().setContent(grid);
+
+        if (activityToEdit != null) {
+            titleField.setText(activityToEdit.getTitle());
+            datePicker.setValue(activityToEdit.getDate());
+            categoryCombo.getSelectionModel().select(activityToEdit.getCategory());
+            priorityCombo.getSelectionModel().select(activityToEdit.getPriority());
+            descriptionArea.setText(activityToEdit.getDescription());
+            completedCheck.setSelected(activityToEdit.isCompleted());
+        }
+
+        Button okButton = (Button) getDialogPane().lookupButton(ButtonType.OK);
+        okButton.setDisable(false); // langsung enabled karena sudah ada judul lama
+        titleField.textProperty().addListener((obs, oldVal, newVal) -> {
+            okButton.setDisable(newVal.trim().isEmpty());
+        });
+
+        setResultConverter(new Callback<ButtonType, Activity>() {
+            @Override
+            public Activity call(ButtonType b) {
+                if (b == ButtonType.OK) {
+                    String title = titleField.getText().trim();
+                    LocalDate date = datePicker.getValue();
+                    Category category = categoryCombo.getSelectionModel().getSelectedItem();
+                    String priority = priorityCombo.getSelectionModel().getSelectedItem();
+                    String description = descriptionArea.getText().trim();
+                    boolean completed = completedCheck.isSelected();
+
+                    if (activityToEdit != null) {
+                        activityToEdit.setTitle(title);
+                        activityToEdit.setDate(date);
+                        activityToEdit.setCategory(category);
+                        activityToEdit.setPriority(priority);
+                        activityToEdit.setDescription(description);
+                        activityToEdit.setCompleted(completed);
+                        return activityToEdit;
+                    } else {
+                        return new Activity(0, title, date, category, priority, completed, user)
+                                .setDescription(description);
+                    }
+                }
+                return null;
             }
-            return null;
         });
     }
 }

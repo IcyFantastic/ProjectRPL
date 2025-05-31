@@ -39,22 +39,17 @@ public class ResetPasswordController {
             return;
         }
 
-        List<User> users = Storage.getUsers();
-        boolean found = false;
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                user.setPassword(newPassword);
-                found = true;
-                break;
-            }
-        }
-
-        if (!found) {
+        if (!Storage.userExists(username)) {
             show("Username tidak ditemukan");
             return;
         }
 
-        Storage.saveUsers(users);
+        boolean updateSuccess = Storage.updatePassword(username, newPassword);
+
+        if (!updateSuccess) {
+            show("Gagal mengubah password");
+            return;
+        }
 
         Alert success = new Alert(Alert.AlertType.INFORMATION);
         success.setTitle("Reset Password Berhasil");
@@ -92,6 +87,7 @@ public class ResetPasswordController {
         alert.showAndWait();
     }
 
-    public void handleResetPassword(ActionEvent actionEvent) {
+    public void handleResetPassword(ActionEvent actionEvent) throws Exception {
+        handleReset();
     }
 }
