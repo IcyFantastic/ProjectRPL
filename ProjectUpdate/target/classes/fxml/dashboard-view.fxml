@@ -6,7 +6,7 @@
 <?import javafx.geometry.Insets?>
 
 <VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.project.Controller.DashboardController"
-stylesheets="@../css/dashboard.css">
+      stylesheets="@../css/dashboard.css">
     <padding>
         <Insets top="10" right="10" bottom="10" left="10"/>
     </padding>
@@ -39,10 +39,10 @@ stylesheets="@../css/dashboard.css">
 
     <!-- Activity List Header -->
     <HBox styleClass="list-header" spacing="10" style="-fx-background-color: #e0e0e0; -fx-padding: 5;">
-        <Label text="Judul" prefWidth="150"/>
-        <Label text="Tanggal" prefWidth="100"/>
+        <Label text="Judul" prefWidth="185"/>
+        <Label text="Tanggal" prefWidth="90"/>
         <Label text="Kategori" prefWidth="100"/>
-        <Label text="Prioritas" prefWidth="80"/>
+        <Label text="Prioritas" prefWidth="82"/>
         <Label text="Status" prefWidth="80"/>
         <Region prefWidth="50"/> <!-- Spacer for buttons -->
         <Region prefWidth="50"/> <!-- Spacer for buttons -->

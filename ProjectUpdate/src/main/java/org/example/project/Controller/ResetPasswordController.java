@@ -1,5 +1,6 @@
 package org.example.project.Controller;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -21,6 +23,10 @@ public class ResetPasswordController {
     @FXML private TextField usernameField;
     @FXML private PasswordField newPasswordField;
     @FXML private PasswordField confirmPasswordField;
+    @FXML private TextField backupField;
+    @FXML private VBox formVBox;
+    @FXML private AnchorPane leftPanel;
+    @FXML private AnchorPane rightPanel;
 
     @FXML
     private void handleReset() throws Exception {
@@ -70,14 +76,27 @@ public class ResetPasswordController {
     }
 
     @FXML
-    private VBox formVBox;
-
-    @FXML
     private void initialize() {
+        // Slide Up animasi form
         TranslateTransition tt = new TranslateTransition(Duration.millis(500), formVBox);
         tt.setFromY(300);
         tt.setToY(0);
         tt.play();
+
+        // Fade in/pulse background kiri-kanan
+        FadeTransition leftFade = new FadeTransition(Duration.seconds(1.5), leftPanel);
+        leftFade.setFromValue(0.9);
+        leftFade.setToValue(1.0);
+        leftFade.setAutoReverse(true);
+        leftFade.setCycleCount(FadeTransition.INDEFINITE);
+        leftFade.play();
+
+        FadeTransition rightFade = new FadeTransition(Duration.seconds(1.5), rightPanel);
+        rightFade.setFromValue(0.9);
+        rightFade.setToValue(1.0);
+        rightFade.setAutoReverse(true);
+        rightFade.setCycleCount(FadeTransition.INDEFINITE);
+        rightFade.play();
     }
 
 

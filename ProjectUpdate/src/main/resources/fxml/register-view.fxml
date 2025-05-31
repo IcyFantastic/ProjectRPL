@@ -45,6 +45,11 @@
                                promptText="Confirm Password"
                                styleClass="input-field" />
 
+                <!-- Backup For Reset Password -->
+                <PasswordField fx:id="backupfield"
+                               promptText="What's Your Pet's Name?"
+                               styleClass="input-field" />
+
                 <!-- Register Button -->
                 <Button text="REGISTER"
                         onAction="#handleRegister"

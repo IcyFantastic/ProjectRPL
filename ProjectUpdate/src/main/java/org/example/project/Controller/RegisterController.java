@@ -1,5 +1,6 @@
 package org.example.project.Controller;
 
+import javafx.animation.FadeTransition;
 import org.example.project.Util.Storage;
 
 import javafx.animation.TranslateTransition;
@@ -19,6 +20,7 @@ public class RegisterController {
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmField;
     @FXML private VBox formVBox;
+    @FXML private VBox brandingPane;
 
     @FXML
     private void initialize() {
@@ -26,13 +28,26 @@ public class RegisterController {
     }
 
     private void playFormEntryAnimation() {
-        formVBox.setTranslateY(50); // mulai sedikit di bawah
-        TranslateTransition transition = new TranslateTransition(Duration.millis(500), formVBox);
-        transition.setFromY(50);
-        transition.setToY(0);
-        transition.setCycleCount(1);
-        transition.setAutoReverse(false);
-        transition.play();
+        // Fade in formVBox
+        FadeTransition fade = new FadeTransition(Duration.millis(700), formVBox);
+        fade.setFromValue(0);
+        fade.setToValue(1);
+
+        // Slide up formVBox
+        TranslateTransition slideForm = new TranslateTransition(Duration.millis(700), formVBox);
+        slideForm.setFromY(50);
+        slideForm.setToY(0);
+
+        // Slide brandingPane dari kiri jika tidak null
+        if (brandingPane != null) {
+            TranslateTransition slideBranding = new TranslateTransition(Duration.millis(700), brandingPane);
+            slideBranding.setFromX(-300);
+            slideBranding.setToX(0);
+            slideBranding.play();
+        }
+
+        fade.play();
+        slideForm.play();
     }
 
     @FXML
