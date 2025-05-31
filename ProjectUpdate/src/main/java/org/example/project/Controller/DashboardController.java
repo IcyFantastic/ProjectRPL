@@ -1,37 +1,71 @@
 package org.example.project.Controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import org.example.project.Model.Activity;
+import org.example.project.Model.Category;
+
+import java.time.LocalDate;
 
 public class DashboardController {
 
     @FXML
-    private VBox navMenu;
+    private ListView<Activity> activityListView;
 
     @FXML
-    private Button addButton;
+    private TextField activityField;
+
+    private ObservableList<Activity> activityList;
+
+    public DashboardController(ListView<Activity> activityListView, TextField activityField) {
+        this.activityListView = activityListView;
+        this.activityField = activityField;
+    }
 
     @FXML
     public void initialize() {
-        System.out.println("TodoController initialized!");
+        activityList = FXCollections.observableArrayList();
+        activityListView.setItems(activityList);
 
-        // Event: Sidebar navigation clicked
-        navMenu.getChildren().forEach(node -> {
-            if (node instanceof Label label) {
-                label.setOnMouseClicked(event -> {
-                    navMenu.getChildren().forEach(n -> n.getStyleClass().remove("selected"));
-                    label.getStyleClass().add("selected");
-                    System.out.println("Navigated to: " + label.getText());
-                });
+        // Menentukan cara menampilkan Activity dalam ListView
+        activityListView.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Activity activity, boolean empty) {
+                super.updateItem(activity, empty);
+                if (empty || activity == null) {
+                    setText(null);
+                } else {
+                    String status = activity.isCompleted() ? "[✓]" : "[ ]";
+                    setText(status + " " + activity.getTitle());
+                }
             }
         });
+    }
 
-        // Event: "+" button clicked
-        addButton.setOnAction(e -> {
-            System.out.println("Add button clicked!");
-            // Nanti bisa tampilkan popup form untuk input task baru
-        });
+    @FXML
+    private void handleAddActivity() {
+        String title = activityField.getText().trim();
+        if (!title.isEmpty()) {
+            Activity activity = new Activity(
+                    title,
+                    LocalDate.now(),
+                    new Category("Default", "", ""),  // Contoh kategori default
+                    "Medium",                         // Default priority
+                    false,                            // Default belum selesai
+                    "user1"                           // Contoh username
+            );
+            activityList.add(activity);
+            activityField.clear();
+        }
+    }
+
+    @FXML
+    private void handleDeleteActivity() {
+        Activity selected = activityListView.getSelectionModel().getSelectedItem();
+        if (selected != null) {
+            activityList.remove(selected);
+        }
     }
 }

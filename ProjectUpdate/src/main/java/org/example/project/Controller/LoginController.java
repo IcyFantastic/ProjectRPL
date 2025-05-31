@@ -64,6 +64,7 @@ public class LoginController {
                 s.setTitle("To-Do List - " + u);
 
                 MainController mc = loader.getController();
+                mc.setPrimaryStage(s);
                 mc.initData(u);
                 mc.setOnLogout(() -> Storage.saveAll());
 

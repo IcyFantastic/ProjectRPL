@@ -2,75 +2,57 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.project.Controller.DashboardController"
-            stylesheets="@../css/dashboard.css"
-            prefWidth="900" prefHeight="600">
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.project.Controller.MainController"
+stylesheets="@../css/dashboard.css">
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+    <spacing>10</spacing>
 
-    <!-- Sidebar -->
-    <left>
-        <VBox fx:id="sidebar" spacing="20" prefWidth="180" alignment="TOP_CENTER">
-            <VBox fx:id="navMenu" spacing="10">
-                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-                <Label text="Today" styleClass="nav-item selected" />
-                <Label text="Upcomming" styleClass="nav-item" />
-                <Label text="Important" styleClass="nav-item" />
-                <Label text="Someday" styleClass="nav-item" />
-                <Label text="Trash" styleClass="nav-item" />
-            </VBox>
-            <VBox fx:id="intentList" spacing="5">
-                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-                <Label text="Intent" styleClass="intent-title" />
-                <Label text="Trip to Nuwara" styleClass="intent-item" />
-                <Label text="BMW I8 Dream" styleClass="intent-item" />
-            </VBox>
-            <Button fx:id="addButton" text="+" styleClass="add-button" />
-        </VBox>
-    </left>
+    <!-- Header Section -->
+    <HBox styleClass="header-box" spacing="10" alignment="CENTER_LEFT">
+        <Label text="To-Do List" styleClass="header-label" style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+        <Button text="Tambah Aktivitas" onAction="#addActivity" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
+        <Button text="Kelola Kategori" onAction="#manageCategories" style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
+        <Button text="Logout" onAction="#handleLogout" style="-fx-background-color: #f44336; -fx-text-fill: white;"/>
+    </HBox>
 
-    <!-- Main Content -->
-    <center>
-        <VBox spacing="10">
-            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-            <Label text="Today Task" styleClass="section-title" />
-            <Separator />
-            <GridPane hgap="20" vgap="10">
-                <columnConstraints>
-                    <ColumnConstraints percentWidth="60"/>
-                    <ColumnConstraints percentWidth="40"/>
-                </columnConstraints>
+    <!-- Filter Section -->
+    <HBox styleClass="filter-box" spacing="10" alignment="CENTER_LEFT">
+        <Label text="Filter:"/>
 
-                <Label text="my birthday" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="highlight-task"/>
-                <Label text="In Progress" GridPane.rowIndex="0" GridPane.columnIndex="1" styleClass="task-status"/>
+        <Label text="Status:"/>
+        <ComboBox fx:id="filterStatus" onAction="#filterChanged" prefWidth="100"/>
 
-                <Label text="Home Work" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                <Label text="In Progress" GridPane.rowIndex="1" GridPane.columnIndex="1" styleClass="task-status"/>
+        <Label text="Prioritas:"/>
+        <ComboBox fx:id="filterPriority" onAction="#filterChanged" prefWidth="100"/>
 
-                <Label text="Read Books" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                <Label text="In Progress" GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="task-status"/>
+        <Label text="Kategori:"/>
+        <ComboBox fx:id="filterCategory" onAction="#filterChanged" prefWidth="150"/>
 
-                <Label text="Work Out" GridPane.rowIndex="3" GridPane.columnIndex="0" style="-fx-opacity: 0.5;"/>
-                <Label text="In Progress" GridPane.rowIndex="3" GridPane.columnIndex="1" styleClass="task-status"/>
+        <Label text="Cari:"/>
+        <TextField fx:id="searchField" onKeyReleased="#searchActivities" prefWidth="200"/>
+    </HBox>
 
-                <Label text="create todo list" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
-                <Label text="In Progress" GridPane.rowIndex="4" GridPane.columnIndex="1" styleClass="task-status"/>
-            </GridPane>
-        </VBox>
-    </center>
+    <!-- Activity List Header -->
+    <HBox styleClass="list-header" spacing="10" style="-fx-background-color: #e0e0e0; -fx-padding: 5;">
+        <Label text="Judul" prefWidth="150"/>
+        <Label text="Tanggal" prefWidth="100"/>
+        <Label text="Kategori" prefWidth="100"/>
+        <Label text="Prioritas" prefWidth="80"/>
+        <Label text="Status" prefWidth="80"/>
+        <Region prefWidth="50"/> <!-- Spacer for buttons -->
+        <Region prefWidth="50"/> <!-- Spacer for buttons -->
+        <Region prefWidth="50"/> <!-- Spacer for buttons -->
+    </HBox>
 
-    <!-- Quotes -->
-    <right>
-        <VBox spacing="20" alignment="TOP_CENTER">
-            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
-            <Label text="motivational quotes" styleClass="quote-title" />
-            <Label text="“It's fine to celebrate success but it is more important to heed the lessons of failure.”&#10;- Bill Gates"
-                   styleClass="quote green" wrapText="true"/>
-            <Label text="“The biggest risk is not taking any risk... In a world that changing really quickly, the only strategy that is guaranteed to fail is not taking risks.”&#10;- Mark Zuckerberg"
-                   styleClass="quote blue" wrapText="true"/>
-            <Label text="“I think that’s the single best piece of advice: constantly think about how you could be doing things better and questioning yourself.”&#10;- Elon Musk"
-                   styleClass="quote yellow" wrapText="true"/>
-        </VBox>
-    </right>
-</BorderPane>
+    <!-- Activity List -->
+    <ScrollPane fitToWidth="true" fitToHeight="false" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" maxHeight="350">
+        <content>
+            <VBox fx:id="activityList" spacing="5" fillWidth="true"/>
+        </content>
+    </ScrollPane>
+</VBox>

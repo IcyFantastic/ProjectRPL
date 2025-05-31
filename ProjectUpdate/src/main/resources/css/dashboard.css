@@ -1,73 +1,164 @@
-/* Sidebar */
-#sidebar {
-    -fx-background-color: #EEEEEE;
+/* Base Styles */
+.root {
+    -fx-font-family: 'Segoe UI', Roboto, sans-serif;
+    -fx-background-color: #f5f9f5;
 }
 
-.nav-item {
-    -fx-font-size: 14px;
-    -fx-padding: 5 0;
+/* Header Section */
+.header-box {
+    -fx-padding: 12px;
+    -fx-background-color: linear-gradient(to right, #2E7D32, #388E3C);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);
 }
 
-.nav-item.selected {
-    -fx-font-weight: bold;
-}
-
-.intent-title {
-    -fx-text-fill: green;
-    -fx-font-weight: bold;
-}
-
-.intent-item {
-    -fx-font-weight: bold;
-}
-
-/* Add Button */
-.add-button {
-    -fx-background-color: #2196F3;
+.header-label {
     -fx-text-fill: white;
-    -fx-font-size: 20px;
-    -fx-background-radius: 30px;
-    -fx-min-width: 40px;
-    -fx-min-height: 40px;
-}
-
-/* Section Title */
-.section-title {
     -fx-font-size: 24px;
     -fx-font-weight: bold;
 }
 
-/* Highlighted Task */
-.highlight-task {
+/* Button Styles */
+.button {
+    -fx-padding: 8px 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 4px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 2, 0, 0, 1);
+    -fx-transition: all 0.3s;
+}
+
+.button:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 4, 0, 0, 2);
+}
+
+#addActivity {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+}
+
+#addActivity:hover {
+    -fx-background-color: #43A047;
+}
+
+#manageCategories {
     -fx-background-color: #2196F3;
     -fx-text-fill: white;
-    -fx-padding: 5;
 }
 
-/* Task Status */
-.task-status {
-    -fx-text-fill: #E57373;
+#manageCategories:hover {
+    -fx-background-color: #1976D2;
 }
 
-/* Quotes */
-.quote-title {
+#handleLogout {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+}
+
+#handleLogout:hover {
+    -fx-background-color: #D32F2F;
+}
+
+/* Filter Section */
+.filter-box {
+    -fx-padding: 10px;
+    -fx-background-color: #E8F5E9;
+    -fx-border-color: #C8E6C9;
+    -fx-border-width: 1px;
+    -fx-border-radius: 4px;
+}
+
+.filter-box Label {
+    -fx-text-fill: #2E7D32;
     -fx-font-weight: bold;
-    -fx-font-size: 16px;
 }
 
-.quote {
-    -fx-padding: 10;
-    -fx-background-radius: 10;
+.combo-box, .text-field {
+    -fx-background-color: white;
+    -fx-border-color: #C8E6C9;
+    -fx-border-radius: 4px;
+    -fx-padding: 5px;
 }
 
-.quote.green {
-    -fx-background-color: #DCE775;
+.combo-box:hover, .text-field:hover {
+    -fx-border-color: #81C784;
 }
 
-.quote.blue {
-    -fx-background-color: #80DEEA;
+/* Activity List Header */
+.list-header {
+    -fx-background-color: linear-gradient(to right, #A5D6A7, #81C784);
+    -fx-padding: 10px;
+    -fx-border-radius: 4px 4px 0 0;
 }
 
-.quote.yellow {
-    -fx-background-color: #FFE082;
+.list-header Label {
+    -fx-text-fill: #1B5E20;
+    -fx-font-weight: bold;
 }
+
+/* Activity Items */
+.activity-item {
+    -fx-background-color: white;
+    -fx-border-color: #E8F5E9;
+    -fx-border-width: 1px;
+    -fx-padding: 10px;
+    -fx-background-radius: 4px;
+}
+
+.activity-item:hover {
+    -fx-background-color: #F1F8E9;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
+}
+
+/* ScrollPane */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: #E8F5E9;
+    -fx-border-width: 1px;
+    -fx-border-radius: 0 0 4px 4px;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: #F5F9F5;
+}
+
+/* Status Indicators */
+.status-selesai {
+    -fx-text-fill: #2E7D32;
+    -fx-font-weight: bold;
+}
+
+.status-belum {
+    -fx-text-fill: #FF5722;
+    -fx-font-weight: bold;
+}
+
+/* Priority Indicators */
+.priority-tinggi {
+    -fx-text-fill: #D32F2F;
+    -fx-font-weight: bold;
+}
+
+.priority-sedang {
+    -fx-text-fill: #FFA000;
+    -fx-font-weight: bold;
+}
+
+.priority-rendah {
+    -fx-text-fill: #689F38;
+    -fx-font-weight: bold;
+}
+
+.activity-row > Label {
+    -fx-padding: 5 0 5 0;
+}
+
+.activity-header {
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 5 0;
+    -fx-border-color: #ccc;
+    -fx-border-width: 0 0 1 0;
+}
+.activity-item {
+    -fx-padding: 5 0 5 0;
+}
+

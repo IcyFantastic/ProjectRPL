@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import java.util.List;
 
 public class CategoryDialog extends Dialog<List<Category>> {
+
     public CategoryDialog(String user, List<Category> cats) {
         setTitle("Kelola Kategori");
         ListView<Category> lv = new ListView<>(FXCollections.observableArrayList(cats));
