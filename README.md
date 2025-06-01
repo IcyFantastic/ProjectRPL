@@ -87,9 +87,9 @@ ProjectUpdate/
 - 📆 Integrasi kalender
 
 ## 👨‍💻 Kontributor
-71231022 - Laurensius Rio Darryl <br>
-71231039 - Hansel Ivano Supratman <br>
-71231047 - Nengah Yesi Putri
+👨 71231022 - Laurensius Rio Darryl <br>
+👨 71231039 - Hansel Ivano Supratman <br>
+👩 71231047 - Nengah Yesi Putri
 
 ## 📄 Lisensi
 Proyek ini dilisensikan di bawah Lisensi MIT - lihat file LICENSE untuk detailnya.
