@@ -5,7 +5,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -123,10 +122,7 @@ public class DashboardController {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Pengingat Aktivitas");
             alert.setHeaderText(null);
-
-            // Style the alert dialog
-            styleAlertDialog(alert, "Pengingat Aktivitas", "Ada " + count + " aktivitas hari ini");
-
+            alert.setContentText("Ada " + count + " aktivitas hari ini");
             alert.showAndWait();
         }
     }
@@ -191,13 +187,10 @@ public class DashboardController {
         double newHeight = BASE_HEIGHT + (visibleCount * ROW_HEIGHT);
         primaryStage.setHeight(newHeight);
 
-        // Ensure minimum width for the new layout with sidebar and wider action column
-        if (primaryStage.getWidth() < 950) {
-            primaryStage.setWidth(950);
+        // Ensure minimum width for the new layout with sidebar
+        if (primaryStage.getWidth() < 900) {
+            primaryStage.setWidth(900);
         }
-
-        // Make sure the window is centered on the screen
-        primaryStage.centerOnScreen();
     }
 
     private HBox createActivityItem(Activity activity) {
@@ -207,9 +200,9 @@ public class DashboardController {
 
         // Activity details
         Label titleLabel = new Label(activity.getTitle());
-        titleLabel.setPrefWidth(200);
-        titleLabel.setMaxWidth(200);
-        titleLabel.setMinWidth(200);
+        titleLabel.setPrefWidth(180);
+        titleLabel.setMaxWidth(180);
+        titleLabel.setMinWidth(180);
         titleLabel.setWrapText(true);
 
         Label dateLabel = new Label(activity.getDate().toString());
@@ -237,28 +230,24 @@ public class DashboardController {
         statusLabel.setMinWidth(100);
         statusLabel.getStyleClass().add(activity.isCompleted() ? "status-selesai" : "status-belum");
 
-        // Action buttons in an HBox with more space
-        HBox actionBox = new HBox(8);
+        // Action buttons in an HBox
+        HBox actionBox = new HBox(5);
         actionBox.setAlignment(javafx.geometry.Pos.CENTER);
-        actionBox.setPrefWidth(250);
-        actionBox.setMaxWidth(250);
-        actionBox.setMinWidth(250);
+        actionBox.setPrefWidth(180);
+        actionBox.setMaxWidth(180);
+        actionBox.setMinWidth(180);
 
-        // Create buttons with better styling
         Button editButton = new Button("Edit");
-        editButton.getStyleClass().addAll("manage-button", "action-button");
+        editButton.getStyleClass().add("manage-button");
         editButton.setOnAction(e -> editActivity(activity));
-        editButton.setPrefWidth(70);
 
         Button deleteButton = new Button("Hapus");
-        deleteButton.getStyleClass().addAll("logout-button", "action-button");
+        deleteButton.getStyleClass().add("logout-button");
         deleteButton.setOnAction(e -> deleteActivity(activity));
-        deleteButton.setPrefWidth(70);
 
-        Button toggleButton = new Button(activity.isCompleted() ? "Tandai Belum" : "Selesai");
-        toggleButton.getStyleClass().addAll("add-button", "action-button");
+        Button toggleButton = new Button(activity.isCompleted() ? "Tandai Belum" : "Tandai Selesai");
+        toggleButton.getStyleClass().add(activity.isCompleted() ? "add-button" : "add-button");
         toggleButton.setOnAction(e -> toggleActivityStatus(activity));
-        toggleButton.setPrefWidth(90);
 
         actionBox.getChildren().addAll(editButton, deleteButton, toggleButton);
 
@@ -319,11 +308,9 @@ public class DashboardController {
 
     private void deleteActivity(Activity activity) {
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
-        confirm.setTitle("Konfirmasi Hapus");
+        confirm.setTitle("Confirm Delete");
         confirm.setHeaderText(null);
-
-        // Style the confirmation dialog
-        styleAlertDialog(confirm, "Konfirmasi Hapus", "Apakah Anda yakin ingin menghapus aktivitas ini?");
+        confirm.setContentText("Are you sure you want to delete this activity?");
 
         Optional<ButtonType> result = confirm.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -332,7 +319,7 @@ public class DashboardController {
             if (success) {
                 loadActivities(); // Refresh the list
             } else {
-                showAlert("Error", "Gagal menghapus aktivitas dari database.");
+                showAlert("Error", "Failed to delete activity from database.");
             }
         }
     }
@@ -410,61 +397,11 @@ public class DashboardController {
         }
     }
 
-    /**
-     * Helper method to style an alert dialog to match the UI of other screens
-     * @param alert The alert dialog to style
-     * @param title The title of the alert
-     * @param message The message to display
-     */
-    private void styleAlertDialog(Alert alert, String title, String message) {
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStyleClass().add("form-pane");
-        dialogPane.setPrefWidth(400);
-        dialogPane.setPadding(new Insets(20));
-        dialogPane.setStyle("-fx-background-color: white; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 4, 0, 0, 2);");
-
-        // Style the buttons
-        Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
-        if (okButton != null) {
-            okButton.getStyleClass().add("primary-button");
-            okButton.setStyle("-fx-background-color: #5e81ac; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 6px;");
-        }
-
-        // Style cancel button if present
-        Button cancelButton = (Button) dialogPane.lookupButton(ButtonType.CANCEL);
-        if (cancelButton != null) {
-            cancelButton.setStyle("-fx-background-color: #4c566a; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 6px;");
-        }
-
-        // Add a custom header with icon and title
-        VBox header = new VBox(10);
-        header.setAlignment(Pos.CENTER);
-
-        Label titleLabel = new Label(title);
-        titleLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #2e3440;");
-
-        Label messageLabel = new Label(message);
-        messageLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #4c566a; -fx-wrap-text: true;");
-        messageLabel.setWrapText(true);
-        messageLabel.setMaxWidth(360);
-
-        header.getChildren().addAll(titleLabel, messageLabel);
-
-        // Replace the default content with our custom content
-        dialogPane.setContent(header);
-
-        // Remove the default content text since we're using our custom label
-        alert.setContentText(null);
-    }
-
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
-
-        // Style the alert dialog
-        styleAlertDialog(alert, title, message);
-
+        alert.setContentText(message);
         alert.showAndWait();
     }
 

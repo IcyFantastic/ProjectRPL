@@ -239,24 +239,6 @@
     -fx-background-radius: 4px;
 }
 
-.action-button {
-    -fx-font-size: 12px;
-    -fx-padding: 6px 12px;
-    -fx-background-radius: 4px;
-    -fx-text-fill: white;
-    -fx-font-weight: bold;
-    -fx-min-width: 70px;
-    -fx-max-width: 100px;
-    -fx-alignment: center;
-}
-
-/* Cancel button style for dialogs */
-.cancel-button {
-    -fx-background-color: #4c566a;
-    -fx-text-fill: white;
-    -fx-font-weight: normal;
-}
-
 /* Status Indicators */
 .status-selesai {
     -fx-text-fill: #a3be8c;

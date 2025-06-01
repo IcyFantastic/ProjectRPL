@@ -265,13 +265,7 @@ public class Storage {
             pstmt.setString(3, activity.getDate().toString());
             pstmt.setString(4, activity.getPriority());
             pstmt.setInt(5, activity.isCompleted() ? 1 : 0);
-
-            // Check if category is null and handle it
-            String categoryName = "Uncategorized";
-            if (activity.getCategory() != null) {
-                categoryName = activity.getCategory().getName();
-            }
-            pstmt.setString(6, categoryName);
+            pstmt.setString(6, activity.getCategory().getName());
             pstmt.setString(7, activity.getUser());
 
             int affectedRows = pstmt.executeUpdate();
@@ -309,13 +303,7 @@ public class Storage {
             stmt.setString(3, activity.getDate().toString());
             stmt.setString(4, activity.getPriority());
             stmt.setInt(5, activity.isCompleted() ? 1 : 0);
-
-            // Check if category is null and handle it
-            String categoryName = "Uncategorized";
-            if (activity.getCategory() != null) {
-                categoryName = activity.getCategory().getName();
-            }
-            stmt.setString(6, categoryName);
+            stmt.setString(6, activity.getCategory().getName());
             stmt.setInt(7, activity.getId());
 
             return stmt.executeUpdate() > 0;
