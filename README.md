@@ -87,7 +87,9 @@ ProjectUpdate/
 - 📆 Integrasi kalender
 
 ## 👨‍💻 Kontributor
-- Tim Proyek RPL
+71231022 - Laurensius Rio Darryl
+71231039 - Hansel Ivano Supratman
+71231047 - Nengah Yesi Putri
 
 ## 📄 Lisensi
 Proyek ini dilisensikan di bawah Lisensi MIT - lihat file LICENSE untuk detailnya.
