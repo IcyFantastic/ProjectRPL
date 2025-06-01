@@ -49,6 +49,16 @@ public class Storage {
             stmt.execute(sqlCreateActivities);
             stmt.execute(sqlCreateSession);
 
+            // Cek apakah user admin sudah ada
+            String checkAdminSql = "SELECT 1 FROM users WHERE username = 'admin'";
+            try (ResultSet rs = stmt.executeQuery(checkAdminSql)) {
+                if (!rs.next()) {
+                    // Insert user admin default
+                    String insertAdminSql = "INSERT INTO users (username, password, pet_name) VALUES ('admin', 'Admin123!', NULL)";
+                    stmt.executeUpdate(insertAdminSql);
+                }
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

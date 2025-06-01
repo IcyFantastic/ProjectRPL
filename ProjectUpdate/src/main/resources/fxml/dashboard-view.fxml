@@ -95,11 +95,11 @@
                     <padding>
                         <Insets top="15" right="20" bottom="15" left="20"/>
                     </padding>
-                    <Label text="Judul" styleClass="column-header" HBox.hgrow="ALWAYS" maxWidth="200" minWidth="200"/>
-                    <Label text="Tanggal" styleClass="column-header" maxWidth="100" minWidth="100"/>
-                    <Label text="Kategori" styleClass="column-header" maxWidth="120" minWidth="120"/>
-                    <Label text="Prioritas" styleClass="column-header" maxWidth="100" minWidth="100"/>
-                    <Label text="Status" styleClass="column-header" maxWidth="100" minWidth="100"/>
+                    <Label text="Judul" styleClass="column-header" HBox.hgrow="ALWAYS" maxWidth="225" minWidth="225"/>
+                    <Label text="Tanggal" styleClass="column-header" maxWidth="130" minWidth="130"/>
+                    <Label text="Kategori" styleClass="column-header" maxWidth="125" minWidth="125"/>
+                    <Label text="Prioritas" styleClass="column-header" maxWidth="115" minWidth="115"/>
+                    <Label text="Status" styleClass="column-header" maxWidth="190" minWidth="190"/>
                     <Label text="Aksi" styleClass="column-header" maxWidth="250" minWidth="250"/>
                 </HBox>
 
