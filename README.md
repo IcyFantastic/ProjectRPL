@@ -77,7 +77,8 @@ ProjectUpdate/
 9. 🔎 **Pencarian**: Gunakan bilah pencarian untuk menemukan tugas berdasarkan nama
 
 ## 📸 Tangkapan Layar
-(Tangkapan layar akan ditampilkan di sini)
+![Screenshot 2025-06-01 175211](https://github.com/user-attachments/assets/2392eb50-4a99-4e57-9eb5-976d8edb2608) ![Screenshot 2025-06-01 175219](https://github.com/user-attachments/assets/d0ff7d1b-d49b-4126-ad96-067c439eb6b4) <br>
+![Screenshot 2025-06-01 175246](https://github.com/user-attachments/assets/ca61927a-6dc1-4fff-84a0-cd5a5374a890) ![Screenshot 2025-06-01 175335](https://github.com/user-attachments/assets/bf16aaf8-fd93-4548-b477-0bd261046a65)
 
 ## 🚀 Pengembangan Masa Depan
 - ☁️ Sinkronisasi cloud
@@ -91,5 +92,6 @@ ProjectUpdate/
 👨 71231039 - Hansel Ivano Supratman <br>
 👩 71231047 - Nengah Yesi Putri
 
-## 📄 Lisensi
-Proyek ini dilisensikan di bawah Lisensi MIT - lihat file LICENSE untuk detailnya.
+## 🔑 Account Default
+Username: admin <br>
+Password: Admin123!
