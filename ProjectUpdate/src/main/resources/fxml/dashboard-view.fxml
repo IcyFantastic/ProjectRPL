@@ -95,12 +95,12 @@
                     <padding>
                         <Insets top="15" right="20" bottom="15" left="20"/>
                     </padding>
-                    <Label text="Judul" styleClass="column-header" HBox.hgrow="ALWAYS" maxWidth="200" minWidth="180"/>
+                    <Label text="Judul" styleClass="column-header" HBox.hgrow="ALWAYS" maxWidth="200" minWidth="200"/>
                     <Label text="Tanggal" styleClass="column-header" maxWidth="100" minWidth="100"/>
                     <Label text="Kategori" styleClass="column-header" maxWidth="120" minWidth="120"/>
                     <Label text="Prioritas" styleClass="column-header" maxWidth="100" minWidth="100"/>
                     <Label text="Status" styleClass="column-header" maxWidth="100" minWidth="100"/>
-                    <Label text="Aksi" styleClass="column-header" maxWidth="180" minWidth="180"/>
+                    <Label text="Aksi" styleClass="column-header" maxWidth="250" minWidth="250"/>
                 </HBox>
 
                 <!-- Task List Content -->
